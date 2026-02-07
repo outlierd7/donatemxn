@@ -1,0 +1,976 @@
+/* =========================================
+   STYLE HUELLAS DE AMOR - PALETA "CORAZONES PELUDOS"
+   Design por Especialista UI/UX
+   ========================================= */
+
+:root {
+    /* --- PALETA ORGÂNICA & QUENTE --- */
+    
+    /* Primária: O Vermelho/Laranja do Coração (Urgência e Amor) */
+    --primary-color: #D94528;
+    --primary-hover: #B53218;
+    
+    /* Secundária: O Dourado dos Cachorros (Esperança e Alegria) */
+    --secondary-color: #E69925;
+    --secondary-hover: #C98218;
+    
+    /* Fundos: Tons de Areia e Papel (Acolhimento) */
+    --bg-paper: #FFF9F2;       /* Fundo principal (creme quente) */
+    --bg-sand: #FDEED9;        /* Fundo secundário (bege mais intenso) */
+    --white: #FFFFFF;
+    
+    /* Textos: Tons de Terra (Legibilidade sem agressividade do preto puro) */
+    --text-main: #4A2C22;      /* Café escuro */
+    --text-muted: #785A4F;     /* Marrom suave */
+    --text-on-primary: #FFFFFF;
+    
+    /* Sombras Coloridas (Técnica moderna para evitar "sujeira" do preto) */
+    --shadow-warm: 0 10px 40px rgba(217, 69, 40, 0.15);
+    --shadow-card: 0 8px 24px rgba(74, 44, 34, 0.08);
+    
+    /* Tipografia */
+    --font-family: 'Poppins', sans-serif;
+    --radius-soft: 20px;       /* Bordas arredondadas amigáveis */
+}
+
+/* Reset e Otimizações */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-main);
+    background-color: var(--bg-paper); /* Fundo base agora é creme */
+}
+
+/* Imagens responsivas e otimizadas */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =========================================
+   HEADER & NAVEGAÇÃO
+   ========================================= */
+.main-header {
+    background: #2D1B15;
+    padding: 10px 0;
+    /* Sombra dourada suave */
+    box-shadow: 0 4px 20px rgba(230, 153, 37, 0.15); 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-logo-img {
+    width: 100px;
+    height: auto;
+}
+
+/* =========================================
+   ELEMENTOS GERAIS DE UI
+   ========================================= */
+
+/* Títulos das Seções */
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+/* Detalhe visual abaixo do título (O sorriso do logo) */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 6px;
+    background: var(--secondary-color);
+    margin: 10px auto 0;
+    border-radius: 10px;
+}
+
+/* BOTÕES DE AÇÃO (CTA) - Estilo "Coração Pulsante" */
+.video-cta-btn, .cta-btn, .transformation-cta-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #E85D3F 100%);
+    color: var(--text-on-primary);
+    border: none;
+    padding: 16px 75px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(217, 69, 40, 0.4);
+    
+    /* Centralização e segurança mobile */
+    max-width: 90%;
+    width: fit-content;
+    margin: 20px auto 0;
+    display: flex;
+}
+
+.video-cta-btn:hover, .cta-btn:hover, .transformation-cta-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(217, 69, 40, 0.6);
+    background: linear-gradient(135deg, #B53218 0%, var(--primary-color) 100%);
+}
+
+/* Animação sutil de pulso para urgência */
+@keyframes warmPulse {
+    0% { box-shadow: 0 0 0 0 rgba(217, 69, 40, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(217, 69, 40, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(217, 69, 40, 0); }
+}
+
+.video-cta-btn {
+    animation: warmPulse 2s infinite;
+}
+
+/* =========================================
+   SEÇÕES
+   ========================================= */
+
+/* Banner Principal */
+.banner-section {
+    line-height: 0;
+    background-color: var(--bg-paper);
+}
+
+.banner-image {
+    width: 100%;
+}
+
+/* Seção de Vídeo */
+.video-section {
+    background: var(--bg-paper);
+    padding: 40px 0;
+}
+
+.video-wrapper {
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+    box-shadow: var(--shadow-warm);
+    border: 4px solid var(--white);
+}
+
+.video-cta-container {
+    background: var(--bg-paper);
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+/* Quem Somos */
+.about-section {
+    background: var(--white);
+    padding: 60px 0;
+    position: relative;
+}
+
+/* Detalhe de design: Borda superior orgânica (opcional, via CSS puro) */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--bg-paper) 0%, var(--secondary-color) 50%, var(--bg-paper) 100%);
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 800px;
+    margin: 0 auto 20px;
+    text-align: center;
+}
+
+/* Estatísticas (Cards) */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 25px;
+    max-width: 900px;
+    margin: 40px auto 0;
+}
+
+.stat-item {
+    background: var(--bg-paper);
+    padding: 30px 15px;
+    border-radius: var(--radius-soft);
+    text-align: center;
+    border: 2px solid rgba(230, 153, 37, 0.2); /* Borda ocre suave */
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--secondary-color);
+    background: var(--white);
+    box-shadow: var(--shadow-warm);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 15px;
+    color: var(--primary-color); /* Ícones vermelhos */
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* Salva o Refugio */
+.save-shelter-section {
+    background: var(--bg-sand); /* Fundo Bege Quente */
+    padding: 60px 0;
+    text-align: center;
+}
+
+.banner2-image {
+    border-radius: var(--radius-soft);
+    box-shadow: var(--shadow-card);
+    max-width: 100%;
+}
+
+.urgent-message {
+    margin: 30px 0;
+}
+
+.urgent-message p {
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.urgent-message .highlight {
+    color: var(--primary-color);
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0 10px;
+    border-radius: 4px;
+}
+
+/* =========================================
+   SEÇÃO IMPACTO (OTIMIZADA E COMPACTA)
+   ========================================= */
+
+.impact-section {
+    background: var(--white);
+    border-radius: var(--radius-soft);
+    padding: 25px; /* Reduzi o padding geral */
+    margin-top: 30px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.impact-section h3 {
+    text-align: center;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    font-size: 1.2rem; /* Título um pouco menor */
+}
+
+.impact-grid {
+    display: grid;
+    /* Ajuste para caber 2 lado a lado em telas médias */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 20px; /* Menos espaço entre os itens */
+}
+
+.impact-item {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente o texto com o preço */
+    gap: 12px; /* Aproxima o valor da descrição */
+    padding: 10px 12px; /* Card bem mais fino (compacto) */
+    background: var(--bg-paper);
+    border-radius: 8px; /* Cantos menos arredondados para economizar espaço visual */
+    border-left: 4px solid var(--secondary-color); /* Mantém o detalhe dourado elegante */
+    transition: transform 0.2s ease;
+}
+
+.impact-item:hover {
+    background: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.impact-value {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 6px 10px; /* Badge menor */
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.8rem; /* Fonte do preço reduzida */
+    white-space: nowrap; /* Garante que o preço fique em uma linha */
+    text-align: center;
+    min-width: 100px; /* Garante que todos os badges tenham largura parecida */
+    flex-shrink: 0; /* Impede que o preço seja esmagado em telas pequenas */
+    box-shadow: 0 2px 5px rgba(217, 69, 40, 0.2);
+}
+
+.impact-description {
+    font-size: 0.85rem; /* Texto descritivo menor e mais elegante */
+    line-height: 1.3;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Ajuste Mobile Específico para essa lista */
+@media (max-width: 480px) {
+    .impact-grid {
+        grid-template-columns: 1fr; /* Força 1 coluna no celular */
+    }
+    
+    .impact-item {
+        padding: 8px 10px;
+    }
+    
+    .impact-value {
+        min-width: 85px; /* Badge um pouco menor no mobile */
+        font-size: 0.75rem;
+    }
+}
+
+/* =========================================
+   DOAÇÃO (NEQUI/PIX)
+   ========================================= */
+.donation-section {
+    /* Gradiente vibrante do vermelho para o laranja */
+    background: linear-gradient(135deg, var(--primary-color) 0%, #C0392B 100%);
+    color: var(--white);
+    padding: 60px 0;
+}
+
+.donation-section .section-title {
+    color: var(--white);
+}
+.donation-section .section-title::after {
+    background: var(--secondary-color); /* Amarelo no título branco */
+}
+
+/* Ajuste para a imagem PIX branca */
+.pix-image {
+
+    align-items: center;
+    margin-bottom: 30px;
+  
+}
+
+/* Ajuste opcional para a própria imagem, se necessário */
+.pix-qr {
+    max-width: 180px !important; /* Aumentei um pouco o tamanho máximo */
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); /* Sombra suave na própria imagem branca */
+}
+
+.pix-instructions {
+    background: rgba(255, 255, 255, 0.1); /* Vidro fosco */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-soft);
+    padding: 30px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.pix-instructions h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.pix-instructions li {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* =========================================
+   ÁREA DA CHAVE NEQUI (OTIMIZADA)
+   ========================================= */
+
+
+
+
+
+.pix-key-container {
+    background: var(--white);
+    padding: 25px 20px; /* Reduzi bastante o espaço interno (era 40px) */
+    border-radius: 20px; /* Bordas um pouco mais contidas */
+    text-align: center;
+    margin: 15px auto 25px; /* Menos margem externa */
+    max-width: 420px; /* Largura máxima menor para não ficar "esticado" */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra mais leve */
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* O Número da Chave */
+.pix-key {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem; /* Reduzi de 2.5rem para 2rem (ainda grande, mas contido) */
+    font-weight: 800;
+    color: var(--text-main);
+    
+    background: #FFF9F0;
+    padding: 12px 10px; /* Card mais fino verticalmente */
+    border: 2px dashed var(--secondary-color); /* Borda um pouco mais delicada */
+    border-radius: 12px;
+    margin-bottom: 15px; /* Menos espaço abaixo do número */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.5px;
+    word-break: break-all;
+    user-select: all;
+}
+
+/* Texto do Destinatário */
+.pix-recipient {
+    background: #f4f4f4;
+    padding: 4px 12px; /* Pílula mais fina */
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 0.85rem; /* Fonte levemente menor */
+    color: var(--text-muted);
+    margin-bottom: 15px; /* Aproximei do botão */
+}
+
+.pix-recipient strong {
+    color: var(--primary-color);
+}
+
+/* O Botão "Copiar" Compacto */
+.copy-btn {
+    background: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    width: 100%;
+    padding: 12px 15px; /* Altura do botão reduzida (era 18px) */
+    font-size: 1rem; /* Fonte ajustada */
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    
+    box-shadow: 0 3px 0 #C98218; /* Efeito 3D mais sutil */
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.copy-btn:hover {
+    background: var(--secondary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 #C98218;
+}
+
+.copy-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 #C98218;
+}
+
+.copy-icon {
+    font-size: 1.2rem; /* Ícone ajustado */
+    margin-top: -2px;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .pix-key {
+        font-size: 1.6rem; /* Ajuste fino para telas muito pequenas */
+    }
+}
+
+/* =========================================
+   HISTÓRIAS DE TRANSFORMAÇÃO (Carrossel)
+   ========================================= */
+.transformation-section {
+    background: var(--white);
+    padding: 80px 0;
+}
+
+.transformation-card {
+    background: var(--white);
+    padding: 20px;
+    /* Sem borda, apenas sombra elegante */
+    box-shadow: var(--shadow-card);
+    border-radius: var(--radius-soft);
+}
+
+/* Layout Antes/Depois */
+.before-after {
+    display: flex;
+    gap: 10px;
+}
+
+.image-container {
+    flex: 1;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+}
+
+.before-label { background: rgba(74, 44, 34, 0.85); } /* Café escuro */
+.after-label { background: var(--secondary-color); }  /* Dourado */
+
+.transformation-content h3 {
+    color: var(--primary-color);
+    margin: 20px 0 10px;
+    font-size: 1.4rem;
+}
+
+.transformation-content p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* Controles de Carrossel */
+.transformation-btn, .testimonial-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.transformation-btn:hover, .testimonial-btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+
+
+.testimonials-section {
+    background: var(--bg-sand); /* Fundo areia para destacar o card branco */
+    padding: 60px 0;
+}
+
+.testimonial-card {
+    background: var(--white);
+    border-radius: 25px;
+    padding: 50px 30px 40px; /* Mais espaço no topo para a imagem */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    position: relative;
+    margin: 20px auto; /* Centraliza o card */
+    max-width: 600px; /* Limita largura para leitura confortável */
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* IMAGEM DO DEPOIMENTO (Maior e com destaque) */
+.testimonial-image {
+    margin-top: -65px; /* Puxa a imagem para cima da borda do card (efeito flutuante) */
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.testimonial-image img {
+    width: 140px; /* Aumentado de 80px para 140px (BEM maior) */
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+    
+    /* Borda Dourada Elegante */
+    border: 5px solid var(--secondary-color); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra na foto */
+    background: var(--white);
+}
+
+/* Conteúdo de Texto */
+.testimonial-content h4 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.testimonial-content p {
+    font-size: 1.1rem; /* Texto um pouco maior */
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* Aspas Decorativas no Fundo */
+.testimonial-card::before {
+    content: '“';
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8rem;
+    color: rgba(230, 153, 37, 0.1); /* Dourado bem clarinho */
+    font-family: serif;
+    line-height: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   CONTROLES (SETAS) - LADO A LADO
+   ========================================= */
+
+.testimonial-controls {
+    display: flex !important; /* Força horizontal */
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 25px; /* Espaço confortável entre as setas */
+    margin-top: 30px;
+    width: 100%;
+}
+
+.testimonial-btn {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    
+    /* Centralização do ícone */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    
+    background: var(--white);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    /* Garante que não tenha margens estranhas */
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+}
+
+.testimonial-btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(217, 69, 40, 0.3);
+}
+
+/* Remove os pontinhos indicadores se não quiser usar, ou ajusta aqui */
+.testimonial-indicators {
+    display: none; /* Oculta os pontinhos para focar nas setas grandes */
+}
+
+/* =========================================
+   CTA FINAL & FOOTER
+   ========================================= */
+.cta-section {
+    background: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 80px 0;
+}
+
+.cta-section .cta-btn {
+    background: var(--white);
+    color: var(--primary-color);
+    margin-top: 30px;
+}
+.cta-section .cta-btn:hover {
+    background: var(--secondary-color);
+    color: var(--white);
+}
+
+/* =========================================
+   FOOTER (CENTRALIZADO E ORGANIZADO)
+   ========================================= */
+
+.footer {
+    background: #2D1B15; /* Marrom Café Escuro */
+    color: #DDDDDD;
+    padding: 60px 0 30px;
+    font-size: 0.95rem;
+    text-align: center; /* Força alinhamento central em tudo */
+}
+
+/* Container do conteúdo principal */
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os blocos verticalmente */
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* Logo e Título */
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Garante que imagem e texto fiquem no meio */
+    width: 100%;
+}
+
+.footer-logo img {
+    width: 160px !important;
+    height: auto !important;
+    margin: 0 auto 15px; /* Margem auto nas laterais centraliza a img */
+    display: block;
+}
+
+.footer-logo h3 {
+    color: var(--secondary-color); /* Dourado */
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Área das Colunas (Contato, Redes, Ajuda) */
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 35px; /* Espaço entre os blocos no celular */
+    width: 100%;
+}
+
+.footer-section h4 {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Links e Itens de Contato */
+.footer-section p, 
+.footer-link, 
+.social-link {
+    color: #cccccc;
+    text-decoration: none;
+    margin-bottom: 12px;
+    
+    /* O SEGREDO DO ALINHAMENTO: */
+    display: flex; 
+    justify-content: center; /* Alinha ícone e texto no centro */
+    align-items: center;
+    gap: 10px; /* Espaço entre ícone e texto */
+    
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover, 
+.social-link:hover {
+    color: var(--secondary-color);
+    transform: translateY(-2px); /* Efeito flutuante leve */
+}
+
+/* Rodapé inferior (Copyright) */
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 40px;
+    padding-top: 30px;
+    color: #888;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+/* =========================================
+   LAYOUT DESKTOP (LOGO EM CIMA, COLUNAS EMBAIXO)
+   ========================================= */
+@media (min-width: 768px) {
+    .footer-info {
+        flex-direction: row; /* Coloca as seções lado a lado */
+        justify-content: center; /* Centraliza o grupo de colunas */
+        gap: 80px; /* Espaço generoso entre as colunas */
+        align-items: flex-start; /* Alinha pelo topo */
+    }
+    
+    /* No desktop, mantemos o logo centralizado no topo */
+    .footer-content {
+        gap: 60px;
+    }
+}
+/* =========================================
+   AJUSTES RESPONSIVOS
+   ========================================= */
+@media (min-width: 768px) {
+    .impact-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        text-align: left;
+    }
+}
+
+@media (min-width: 1024px) {
+    .impact-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .transformation-carousel {
+        display: grid; /* No desktop mostra todos */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    .transformation-item {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    .transformation-controls {
+        display: none;
+    }
+}
+
+/* Carrossel Mobile Lógica (Classes auxiliares) */
+.transformation-item, .testimonial-item {
+    display: none;
+    animation: fadeEffect 0.5s;
+}
+.transformation-item.active, .testimonial-item.active {
+    display: block;
+}
+@keyframes fadeEffect {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+
+.transformation-controls {
+    display: flex !important; /* Força ficar na horizontal */
+    flex-direction: row !important; 
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espaço entre as setas */
+    margin-top: 20px;
+    width: 100%;
+}
+
+.transformation-btn {
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50%;
+    
+    /* Centraliza o ícone dentro da bolinha */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    
+    /* Reset de margens que podem estar empilhando */
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    /* Estética */
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.transformation-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 2. Botão "Transformando Vidas" (Compacto) */
+.transformation-cta-btn {
+    /* O SEGREDO: width auto para não esticar a tela toda */
+    display: inline-flex !important; 
+    width: auto !important; 
+    
+    margin: 20px auto 0; /* Centraliza */
+    padding: 12px 45px; /* Tamanho confortável */
+    
+    font-size: 0.9rem; /* Fonte mais elegante */
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 50px;
+    
+    /* Cor */
+    background: var(--primary-color); 
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.transformation-cta-btn:hover {
+    transform: scale(1.05);
+}
