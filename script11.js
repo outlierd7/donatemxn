@@ -20,12 +20,12 @@ let testimonialInterval = null;
 let transformationInterval = null;
 
 // Inicialização quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeProgressiveImageLoading();
     initializeCarousel();
     initializeTransformationCarousel();
     initializeAnimations();
-    initializePIXCopy();
+    // initializePIXCopy(); // Removido: Usando onclick inline para CLABE/OXXO
     console.log('Site do Refúgio da Tia Rê carregado com sucesso!');
 });
 
@@ -39,7 +39,7 @@ function initializeProgressiveImageLoading() {
         'images/banner1novo.png',
         'images/banner2novo.png',
         'images/logo.png',
-        
+
         // Prioridade 2: Imagens do carrossel de transformações (carregam logo após)
         'images/guerreiro1.webp',
         'images/guerreiro2.webp',
@@ -53,7 +53,7 @@ function initializeProgressiveImageLoading() {
         'images/depois 3.png',
         'images/antes 4.png',
         'images/depois 4.png',
-        
+
         // Prioridade 3: Imagens dos depoimentos (carregam em seguida)
         'images/daniela.webp',
         'images/1.png',
@@ -63,11 +63,11 @@ function initializeProgressiveImageLoading() {
         'images/8.png',
         'images/9.png',
         'images/10.png',
-        
+
         // Prioridade 4: Outras imagens (carregam por último)
         'images/pixxx.png'
     ];
-    
+
     // Função para carregar uma imagem
     function loadImage(src) {
         return new Promise((resolve, reject) => {
@@ -77,32 +77,32 @@ function initializeProgressiveImageLoading() {
             img.src = src;
         });
     }
-    
+
     // Função para carregar imagens em lotes com delay
     async function loadImagesInBatches() {
         const batchSize = 3; // Carrega 3 imagens por vez
         const delayBetweenBatches = 100; // 100ms entre lotes
-        
+
         for (let i = 0; i < imagePriority.length; i += batchSize) {
             const batch = imagePriority.slice(i, i + batchSize);
-            
+
             // Carrega o lote atual
             const promises = batch.map(src => loadImage(src).catch(err => {
                 console.warn(`Falha ao carregar imagem: ${src}`, err);
                 return null;
             }));
-            
+
             await Promise.all(promises);
-            
+
             // Aguarda um pouco antes do próximo lote (exceto para o primeiro lote)
             if (i + batchSize < imagePriority.length) {
                 await new Promise(resolve => setTimeout(resolve, delayBetweenBatches));
             }
         }
-        
+
         console.log('✅ Todas as imagens foram carregadas progressivamente!');
     }
-    
+
     // Carrega as imagens críticas imediatamente
     const criticalImages = [
         'images/logosemfundo2.png',
@@ -110,7 +110,7 @@ function initializeProgressiveImageLoading() {
         'images/banner2novo.png',
         'images/logo.png'
     ];
-    
+
     // Carrega imagens críticas primeiro
     Promise.all(criticalImages.map(src => loadImage(src).catch(err => {
         console.warn(`Falha ao carregar imagem crítica: ${src}`, err);
@@ -120,7 +120,7 @@ function initializeProgressiveImageLoading() {
         // Inicia o carregamento progressivo das demais imagens
         loadImagesInBatches();
     });
-    
+
     // Função para pré-carregar imagens dos carrosséis
     function preloadCarouselImages() {
         const carouselImages = [
@@ -136,13 +136,13 @@ function initializeProgressiveImageLoading() {
             'images/1.png', 'images/2.png', 'images/3.png', 'images/4.png',
             'images/8.png', 'images/9.png', 'images/10.png'
         ];
-        
+
         carouselImages.forEach(src => {
             const img = new Image();
             img.src = src;
         });
     }
-    
+
     // Pré-carrega imagens dos carrosséis em background
     setTimeout(preloadCarouselImages, 500);
 }
@@ -151,17 +151,17 @@ function initializeProgressiveImageLoading() {
 
 function initializeCarousel() {
     createCarouselIndicators();
-    
+
     // Garante que o primeiro depoimento seja mostrado
     showTestimonial(0);
-    
+
     if (CONFIG.testimonials.autoPlay) {
         startAutoPlay();
     }
-    
+
     // Event listeners para controles
     document.addEventListener('keydown', handleKeyboardNavigation);
-    
+
     // Pausa autoplay quando mouse está sobre o carousel
     const carousel = document.getElementById('testimonialsCarousel');
     if (carousel) {
@@ -169,7 +169,7 @@ function initializeCarousel() {
             carousel.addEventListener('mouseenter', stopAutoPlay);
             carousel.addEventListener('mouseleave', startAutoPlay);
         }
-        
+
         // Adiciona suporte para touch/swipe
         initializeTestimonialTouch(carousel);
     }
@@ -182,13 +182,13 @@ function initializeTransformationCarousel() {
     if (CONFIG.transformations.autoPlay) {
         startTransformationAutoPlay();
     }
-    
+
     // Pausa autoplay quando mouse está sobre o carousel
     const transformationCarousel = document.getElementById('transformationCarousel');
     if (transformationCarousel) {
         transformationCarousel.addEventListener('mouseenter', stopTransformationAutoPlay);
         transformationCarousel.addEventListener('mouseleave', startTransformationAutoPlay);
-        
+
         // Adiciona suporte para touch/swipe
         initializeTransformationTouch(transformationCarousel);
     }
@@ -197,9 +197,9 @@ function initializeTransformationCarousel() {
 function createTransformationIndicators() {
     const indicatorsContainer = document.getElementById('transformationIndicators');
     if (!indicatorsContainer) return;
-    
+
     indicatorsContainer.innerHTML = '';
-    
+
     for (let i = 0; i < CONFIG.transformations.totalItems; i++) {
         const indicator = document.createElement('div');
         indicator.className = `transformation-indicator ${i === 0 ? 'active' : ''}`;
@@ -207,7 +207,7 @@ function createTransformationIndicators() {
         indicator.setAttribute('aria-label', `Ir para história ${i + 1}`);
         indicator.setAttribute('role', 'button');
         indicator.setAttribute('tabindex', '0');
-        
+
         // Suporte para navegação por teclado nos indicadores
         indicator.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -215,7 +215,7 @@ function createTransformationIndicators() {
                 goToTransformation(i);
             }
         });
-        
+
         indicatorsContainer.appendChild(indicator);
     }
 }
@@ -223,11 +223,11 @@ function createTransformationIndicators() {
 function showTransformation(index) {
     const transformations = document.querySelectorAll('.transformation-item');
     const indicators = document.querySelectorAll('.transformation-indicator');
-    
+
     // Remove classe active de todos
     transformations.forEach(item => item.classList.remove('active'));
     indicators.forEach(indicator => indicator.classList.remove('active'));
-    
+
     // Adiciona classe active ao atual
     if (transformations[index]) {
         transformations[index].classList.add('active');
@@ -235,7 +235,7 @@ function showTransformation(index) {
     if (indicators[index]) {
         indicators[index].classList.add('active');
     }
-    
+
     currentTransformation = index;
 }
 
@@ -259,7 +259,7 @@ function startTransformationAutoPlay() {
     if (transformationInterval) {
         clearInterval(transformationInterval);
     }
-    
+
     transformationInterval = setInterval(() => {
         nextTransformation();
     }, CONFIG.transformations.interval);
@@ -278,7 +278,7 @@ function initializeTestimonialTouch(carousel) {
     let startX = 0;
     let endX = 0;
     let isDragging = false;
-    
+
     // Touch events
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
@@ -287,14 +287,14 @@ function initializeTestimonialTouch(carousel) {
             stopAutoPlay();
         }
     });
-    
+
     carousel.addEventListener('touchend', (e) => {
         if (!isDragging) return;
-        
+
         endX = e.changedTouches[0].clientX;
         const diffX = startX - endX;
         const threshold = 50; // Sensibilidade do swipe
-        
+
         if (Math.abs(diffX) > threshold) {
             if (diffX > 0) {
                 // Swipe para esquerda - próximo
@@ -304,14 +304,14 @@ function initializeTestimonialTouch(carousel) {
                 prevTestimonial();
             }
         }
-        
+
         isDragging = false;
         // Só reinicia o autoplay se estiver habilitado
         if (CONFIG.testimonials.autoPlay) {
             startAutoPlay();
         }
     });
-    
+
     // Mouse events para desktop
     carousel.addEventListener('mousedown', (e) => {
         startX = e.clientX;
@@ -320,14 +320,14 @@ function initializeTestimonialTouch(carousel) {
             stopAutoPlay();
         }
     });
-    
+
     carousel.addEventListener('mouseup', (e) => {
         if (!isDragging) return;
-        
+
         endX = e.clientX;
         const diffX = startX - endX;
         const threshold = 50;
-        
+
         if (Math.abs(diffX) > threshold) {
             if (diffX > 0) {
                 nextTestimonial();
@@ -335,14 +335,14 @@ function initializeTestimonialTouch(carousel) {
                 prevTestimonial();
             }
         }
-        
+
         isDragging = false;
         // Só reinicia o autoplay se estiver habilitado
         if (CONFIG.testimonials.autoPlay) {
             startAutoPlay();
         }
     });
-    
+
     // Previne seleção de texto durante o drag
     carousel.addEventListener('selectstart', (e) => {
         if (isDragging) {
@@ -360,13 +360,13 @@ function initializeTransformationTouch(carousel) {
     let currentTranslateX = 0;
     let prevTranslateX = 0;
     let animationID = 0;
-    
+
     // Touch events
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         isDragging = true;
         stopTransformationAutoPlay();
-        
+
         // Captura a posição atual
         const activeItem = carousel.querySelector('.transformation-item.active');
         if (activeItem) {
@@ -376,27 +376,27 @@ function initializeTransformationTouch(carousel) {
             prevTranslateX = currentTranslateX;
         }
     });
-    
+
     carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
         e.preventDefault();
-        
+
         const currentX = e.touches[0].clientX;
         const diffX = currentX - startX;
         const moveX = prevTranslateX + diffX;
-        
+
         // Aplica a animação durante o arraste
         const activeItem = carousel.querySelector('.transformation-item.active');
-        const nextItem = carousel.querySelector('.transformation-item.next') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
-        const prevItem = carousel.querySelector('.transformation-item.prev') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
-        
+        const nextItem = carousel.querySelector('.transformation-item.next') ||
+            carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
+        const prevItem = carousel.querySelector('.transformation-item.prev') ||
+            carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
+
         if (activeItem) {
             activeItem.style.transform = `translateX(${moveX}px)`;
             activeItem.style.transition = 'none';
         }
-        
+
         // Mostra o próximo item durante o arraste
         if (diffX < 0 && nextItem) { // Arrastando para esquerda
             nextItem.style.display = 'block';
@@ -410,38 +410,38 @@ function initializeTransformationTouch(carousel) {
             prevItem.style.opacity = '0.7';
         }
     });
-    
+
     carousel.addEventListener('touchend', (e) => {
         if (!isDragging) return;
-        
+
         endX = e.changedTouches[0].clientX;
         const diffX = startX - endX;
         const threshold = 50; // Sensibilidade do swipe
-        
+
         // Reseta as animações
         const activeItem = carousel.querySelector('.transformation-item.active');
-        const nextItem = carousel.querySelector('.transformation-item.next') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
-        const prevItem = carousel.querySelector('.transformation-item.prev') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
-        
+        const nextItem = carousel.querySelector('.transformation-item.next') ||
+            carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
+        const prevItem = carousel.querySelector('.transformation-item.prev') ||
+            carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
+
         if (activeItem) {
             activeItem.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             activeItem.style.transform = '';
         }
-        
+
         if (nextItem) {
             nextItem.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             nextItem.style.transform = '';
             nextItem.style.opacity = '';
         }
-        
+
         if (prevItem) {
             prevItem.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             prevItem.style.transform = '';
             prevItem.style.opacity = '';
         }
-        
+
         if (Math.abs(diffX) > threshold) {
             if (diffX > 0) {
                 // Swipe para esquerda - próximo
@@ -451,17 +451,17 @@ function initializeTransformationTouch(carousel) {
                 prevTransformation();
             }
         }
-        
+
         isDragging = false;
         startTransformationAutoPlay();
     });
-    
+
     // Mouse events para desktop
     carousel.addEventListener('mousedown', (e) => {
         startX = e.clientX;
         isDragging = true;
         stopTransformationAutoPlay();
-        
+
         // Captura a posição atual
         const activeItem = carousel.querySelector('.transformation-item.active');
         if (activeItem) {
@@ -471,27 +471,27 @@ function initializeTransformationTouch(carousel) {
             prevTranslateX = currentTranslateX;
         }
     });
-    
+
     carousel.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         e.preventDefault();
-        
+
         const currentX = e.clientX;
         const diffX = currentX - startX;
         const moveX = prevTranslateX + diffX;
-        
+
         // Aplica a animação durante o arraste
         const activeItem = carousel.querySelector('.transformation-item.active');
-        const nextItem = carousel.querySelector('.transformation-item.next') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
-        const prevItem = carousel.querySelector('.transformation-item.prev') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
-        
+        const nextItem = carousel.querySelector('.transformation-item.next') ||
+            carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
+        const prevItem = carousel.querySelector('.transformation-item.prev') ||
+            carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
+
         if (activeItem) {
             activeItem.style.transform = `translateX(${moveX}px)`;
             activeItem.style.transition = 'none';
         }
-        
+
         // Mostra o próximo item durante o arraste
         if (diffX < 0 && nextItem) { // Arrastando para esquerda
             nextItem.style.display = 'block';
@@ -505,38 +505,38 @@ function initializeTransformationTouch(carousel) {
             prevItem.style.opacity = '0.7';
         }
     });
-    
+
     carousel.addEventListener('mouseup', (e) => {
         if (!isDragging) return;
-        
+
         endX = e.clientX;
         const diffX = startX - endX;
         const threshold = 50;
-        
+
         // Reseta as animações
         const activeItem = carousel.querySelector('.transformation-item.active');
-        const nextItem = carousel.querySelector('.transformation-item.next') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
-        const prevItem = carousel.querySelector('.transformation-item.prev') || 
-                        carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
-        
+        const nextItem = carousel.querySelector('.transformation-item.next') ||
+            carousel.querySelector('.transformation-item:nth-child(' + ((currentTransformation + 1) % CONFIG.transformations.totalItems + 1) + ')');
+        const prevItem = carousel.querySelector('.transformation-item.prev') ||
+            carousel.querySelector('.transformation-item:nth-child(' + (currentTransformation === 0 ? CONFIG.transformations.totalItems : currentTransformation) + ')');
+
         if (activeItem) {
             activeItem.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             activeItem.style.transform = '';
         }
-        
+
         if (nextItem) {
             nextItem.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             nextItem.style.transform = '';
             nextItem.style.opacity = '';
         }
-        
+
         if (prevItem) {
             prevItem.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             prevItem.style.transform = '';
             prevItem.style.opacity = '';
         }
-        
+
         if (Math.abs(diffX) > threshold) {
             if (diffX > 0) {
                 nextTransformation();
@@ -544,11 +544,11 @@ function initializeTransformationTouch(carousel) {
                 prevTransformation();
             }
         }
-        
+
         isDragging = false;
         startTransformationAutoPlay();
     });
-    
+
     // Previne seleção de texto durante o drag
     carousel.addEventListener('selectstart', (e) => {
         if (isDragging) {
@@ -560,9 +560,9 @@ function initializeTransformationTouch(carousel) {
 function createCarouselIndicators() {
     const indicatorsContainer = document.getElementById('testimonialIndicators');
     if (!indicatorsContainer) return;
-    
+
     indicatorsContainer.innerHTML = '';
-    
+
     for (let i = 0; i < CONFIG.testimonials.totalItems; i++) {
         const indicator = document.createElement('div');
         indicator.className = `testimonial-indicator ${i === 0 ? 'active' : ''}`;
@@ -570,7 +570,7 @@ function createCarouselIndicators() {
         indicator.setAttribute('aria-label', `Ir para depoimento ${i + 1}`);
         indicator.setAttribute('role', 'button');
         indicator.setAttribute('tabindex', '0');
-        
+
         // Suporte para navegação por teclado nos indicadores
         indicator.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -578,7 +578,7 @@ function createCarouselIndicators() {
                 goToTestimonial(i);
             }
         });
-        
+
         indicatorsContainer.appendChild(indicator);
     }
 }
@@ -586,11 +586,11 @@ function createCarouselIndicators() {
 function showTestimonial(index) {
     const testimonials = document.querySelectorAll('.testimonial-item');
     const indicators = document.querySelectorAll('.testimonial-indicator');
-    
+
     // Remove classe active de todos (mesmo princípio do transformation)
     testimonials.forEach(item => item.classList.remove('active'));
     indicators.forEach(indicator => indicator.classList.remove('active'));
-    
+
     // Adiciona classe active ao atual
     if (testimonials[index]) {
         testimonials[index].classList.add('active');
@@ -598,7 +598,7 @@ function showTestimonial(index) {
     if (indicators[index]) {
         indicators[index].classList.add('active');
     }
-    
+
     currentTestimonial = index;
 }
 
@@ -643,14 +643,14 @@ function restartAutoPlay() {
 function handleKeyboardNavigation(e) {
     const carousel = document.getElementById('testimonialsCarousel');
     if (!carousel) return;
-    
+
     // Verifica se o foco está no carousel ou seus controles
-    const isCarouselFocused = carousel.contains(document.activeElement) || 
-                             document.activeElement.classList.contains('testimonial-btn') ||
-                             document.activeElement.classList.contains('testimonial-indicator');
-    
+    const isCarouselFocused = carousel.contains(document.activeElement) ||
+        document.activeElement.classList.contains('testimonial-btn') ||
+        document.activeElement.classList.contains('testimonial-indicator');
+
     if (isCarouselFocused) {
-        switch(e.key) {
+        switch (e.key) {
             case 'ArrowLeft':
                 e.preventDefault();
                 prevTestimonial();
@@ -673,87 +673,80 @@ function handleKeyboardNavigation(e) {
 
 // ===== FUNCIONALIDADE PIX =====
 
-function initializePIXCopy() {
-    const copyBtn = document.querySelector('.copy-btn');
-    if (copyBtn) {
-        copyBtn.addEventListener('click', copyPixKey);
-    }
-}
+// ===== FUNCIONALIDADE DE CÓPIA (CLABE / OXXO) =====
+// Não é necessário initializePIXCopy pois usamos onclick no HTML
 
-async function copyPixKey() {
-    const button = document.querySelector('.copy-btn');
-    const pixKey = CONFIG.pixKey;
-    
+async function copyToClipboard(text, buttonElement, type) {
     try {
         // Tenta usar a API moderna de clipboard
         if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(pixKey);
-            showCopySuccess(button);
+            await navigator.clipboard.writeText(text);
+            showCopySuccess(buttonElement, type);
         } else {
             // Fallback para navegadores mais antigos
             const textArea = document.createElement('textarea');
-            textArea.value = pixKey;
+            textArea.value = text;
             textArea.style.position = 'fixed';
             textArea.style.left = '-999999px';
             textArea.style.top = '-999999px';
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-            
+
             const successful = document.execCommand('copy');
             document.body.removeChild(textArea);
-            
+
             if (successful) {
-                showCopySuccess(button);
+                showCopySuccess(buttonElement, type);
             } else {
                 throw new Error('Falha ao copiar');
             }
         }
     } catch (error) {
-        console.error('Erro ao copiar chave PIX:', error);
-        showCopyError(button);
+        console.error('Erro ao copiar:', error);
+        showCopyError(buttonElement, text);
     }
 }
 
-function showCopySuccess(button) {
-    const originalText = '<span class="copy-icon">📋</span> Copiar Clave Nequi';
-    const originalClass = 'copy-btn';
-    
-    button.innerHTML = '<span class="copy-icon">✓</span> ¡Copiado!';
+function showCopySuccess(button, type) {
+    const originalText = button.innerHTML;
+    const feedbackText = type === 'CLABE' ? 'CLABE copiada correctamente ✅' : 'Referencia copiada ✅';
+
+    button.innerHTML = '<span class="copy-icon">✓</span> ¡Listo!';
     button.classList.add('copy-success');
-    
+
     // Feedback tátil se disponível
     if (navigator.vibrate) {
         navigator.vibrate(100);
     }
-    
-    // Mostra alert informativo
-    setTimeout(() => {
-        alert('✅¡Clave Nequi copiada con éxito! ¡Gracias por ayudar a nuestros animales!❤️');
-    }, 500);
-    
+
+    // Mostra alert informativo (opcional, removido para ser mais fluido como pedido "psicologicamente mais fluido")
+    // alert(`✅ ${feedbackText}`); 
+    // O usuário pediu "micro feedback", o botão mudando já é bom, mas vamos manter o alert curto se necessário ou removê-lo.
+    // O pedido diz: "Feedback visual: CLABE copiada correctamente ✅". Vou colocar isso no botão.
+
+    button.innerHTML = `<span class="copy-icon">✅</span> ${type} copiada!`;
+
     // Volta ao estado original após 3 segundos
     setTimeout(() => {
         button.innerHTML = originalText;
-        button.className = originalClass;
-        // Remove qualquer estilo inline para voltar ao CSS original
-        button.style.background = '';
+        button.classList.remove('copy-success');
     }, 3000);
 }
 
-function showCopyError(button) {
+function showCopyError(button, text) {
     const originalText = button.innerHTML;
-    
-    button.innerHTML = '<span class="copy-icon">❌</span> Erro ao copiar';
+
+    button.innerHTML = '<span class="copy-icon">❌</span> Error';
     button.style.background = '#f44336';
-    
+
     setTimeout(() => {
         button.innerHTML = originalText;
         button.style.background = '';
     }, 2000);
-    
-    // Mostra a chave PIX para cópia manual
-    alert(`Não foi possível copiar automaticamente. Chave PIX: ${CONFIG.pixKey}`);
+
+    // Mostra o texto para cópia manual
+    prompt("No se pudo copiar automáticamente. Cópialo manualmente:", text);
 }
 
 // ===== SCROLL SUAVE =====
@@ -771,21 +764,21 @@ function initializeAnimations() {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-        
+
         const observer = new IntersectionObserver(handleIntersection, observerOptions);
-        
+
         // Observa elementos que devem ser animados
         const animatedElements = document.querySelectorAll(
             '.stat-item, .testimonial-item, .value-item, .footer-section'
         );
-        
+
         animatedElements.forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             observer.observe(el);
         });
     }
-    
+
     // Efeito parallax sutil no banner (se suportado)
     initializeParallax();
 }
@@ -794,12 +787,12 @@ function handleIntersection(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const element = entry.target;
-            
+
             // Anima o elemento
             element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             element.style.opacity = '1';
             element.style.transform = 'translateY(0)';
-            
+
             // Para de observar o elemento após animação
             setTimeout(() => {
                 entry.target.style.transition = '';
@@ -811,14 +804,14 @@ function handleIntersection(entries) {
 function initializeParallax() {
     // Desabilitado para evitar problemas de rolagem
     return;
-    
+
     const banner = document.querySelector('.banner-image');
     if (!banner) return;
-    
+
     // Verifica se o usuário não prefere movimento reduzido
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
-    
+
     // Aplica efeito parallax sutil
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
@@ -850,9 +843,9 @@ function isMobile() {
 // Função para logging de eventos (útil para analytics)
 function trackEvent(eventName, properties = {}) {
     console.log(`Event: ${eventName}`, properties);
-    
-            // Aqui você pode integrar com Google Analytics, Facebook Pixel, TikTok Pixel, etc.
-        // Exemplo: gtag('event', eventName, properties);
+
+    // Aqui você pode integrar com Google Analytics, Facebook Pixel, TikTok Pixel, etc.
+    // Exemplo: gtag('event', eventName, properties);
 }
 
 // ===== EVENT LISTENERS ADICIONAIS =====
@@ -888,21 +881,21 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && CONFIG.testimonials.autoPlay) {
         stopAutoPlay();
     }
-    
+
     // Tab trap para elementos focáveis
     handleTabTrap(e);
 });
 
 function handleTabTrap(e) {
     if (e.key !== 'Tab') return;
-    
+
     const focusableElements = document.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
-    
+
     if (e.shiftKey) {
         if (document.activeElement === firstElement) {
             lastElement.focus();
@@ -922,12 +915,12 @@ function handleTabTrap(e) {
 function optimizeImageLoading() {
     // Adiciona classe 'loaded' quando a imagem termina de carregar
     const images = document.querySelectorAll('img');
-    
+
     images.forEach(img => {
         if (img.complete) {
             img.classList.add('loaded');
         } else {
-            img.addEventListener('load', function() {
+            img.addEventListener('load', function () {
                 this.classList.add('loaded');
             });
         }
@@ -947,15 +940,17 @@ window.prevTransformation = prevTransformation;
 window.copyPixKey = copyPixKey;
 
 // Função simples para scroll para seção de doação
-window.scrollToDonation = function() {
+window.scrollToDonation = function () {
     const donationSection = document.getElementById('como-doar-pix');
-    
+
     if (donationSection) {
-        // Scroll simples e direto - centraliza a seção na tela
+        // Scroll simples e direto - alinha ao topo da seção
         donationSection.scrollIntoView({
             behavior: 'smooth',
-            block: 'center'
+            block: 'start'
         });
+    } else {
+        console.error('Seção de doação não encontrada (#como-doar-pix)');
     }
 };
 
