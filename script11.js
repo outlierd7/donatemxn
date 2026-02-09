@@ -276,17 +276,35 @@ function stopTransformationAutoPlay() {
 
 function initializeTestimonialTouch(carousel) {
     let startX = 0;
+    let startY = 0;
     let endX = 0;
     let isDragging = false;
+
+    // Add touchmove validation
+    carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+
+        const diffX = startX - currentX;
+        const diffY = startY - currentY;
+
+        // Se o movimento for mais horizontal que vertical, bloqueia o scroll da página
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (e.cancelable) e.preventDefault();
+        }
+    }, { passive: false });
 
     // Touch events
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
         isDragging = true;
         if (CONFIG.testimonials.autoPlay) {
             stopAutoPlay();
         }
-    });
+    }, { passive: true }); // Passive allows scroll to start immediately if not prevented later
 
     carousel.addEventListener('touchend', (e) => {
         if (!isDragging) return;
@@ -355,6 +373,7 @@ function initializeTestimonialTouch(carousel) {
 
 function initializeTransformationTouch(carousel) {
     let startX = 0;
+    let startY = 0;
     let endX = 0;
     let isDragging = false;
     let currentTranslateX = 0;
@@ -364,6 +383,7 @@ function initializeTransformationTouch(carousel) {
     // Touch events
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
         isDragging = true;
         stopTransformationAutoPlay();
 
@@ -379,11 +399,22 @@ function initializeTransformationTouch(carousel) {
 
     carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        e.preventDefault();
 
         const currentX = e.touches[0].clientX;
-        const diffX = currentX - startX;
-        const moveX = prevTranslateX + diffX;
+        const currentY = e.touches[0].clientY;
+
+        const diffX = startX - currentX;
+        const diffY = startY - currentY; // diffY deve ser positivo se scroll pra baixo, negativo pra cima
+
+        // Só previne o default (scroll da página) se o movimento for predominantemente horizontal
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (e.cancelable) e.preventDefault();
+        } else {
+            return; // Deixa o scroll nativo acontecer
+        }
+
+        // Continua com a lógica de arrastar visualmente somente se for horizontal
+        const moveX = prevTranslateX - diffX; // Invertido sinal pois diffX = start - current
 
         // Aplica a animação durante o arraste
         const activeItem = carousel.querySelector('.transformation-item.active');
@@ -727,6 +758,9 @@ function showCopySuccess(button, type) {
 
     button.innerHTML = `<span class="copy-icon">✅</span> ${type} copiada!`;
 
+    // Rastreamento de Conversão (Purchase) - Com Deduplicação e CAPI
+    trackPurchaseEvent();
+
     // Volta ao estado original após 3 segundos
     setTimeout(() => {
         button.innerHTML = originalText;
@@ -747,6 +781,94 @@ function showCopyError(button, text) {
 
     // Mostra o texto para cópia manual
     prompt("No se pudo copiar automáticamente. Cópialo manualmente:", text);
+}
+
+// ===== RASTREAMENTO E CAPI =====
+
+function trackPurchaseEvent() {
+    // 1. Deduplicação por Sessão
+    if (sessionStorage.getItem('purchase_tracked')) {
+        console.log('Purchase event already tracked in this session. Skipping.');
+        return;
+    }
+
+    // Marca como rastreado
+    sessionStorage.setItem('purchase_tracked', 'true');
+
+    // 2. Dispara Pixel (Browser Side)
+    if (typeof fbq === 'function') {
+        fbq('track', 'Purchase', {
+            value: 100.00,
+            currency: 'MXN'
+        }, { eventID: 'purchase_' + new Date().getTime() }); // EventID para deduplicação com CAPI
+    }
+
+    // 3. Dispara CAPI (Server Side) via Vercel Function
+    sendCAPIEven();
+}
+
+async function sendCAPIEven() {
+    try {
+        const fbp = getCookie('_fbp');
+        const fbc = getCookie('_fbc');
+
+        await fetch('/api/meta-conversion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event_name: 'Purchase',
+                event_source_url: window.location.href,
+                fbp: fbp,
+                fbc: fbc
+            })
+        });
+        console.log('CAPI event sent successfully');
+    } catch (e) {
+        console.error('Error sending CAPI event', e);
+    }
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
+
+
+
+
+async function sendCAPIEven() {
+    try {
+        const fbp = getCookie('_fbp');
+        const fbc = getCookie('_fbc');
+
+        await fetch('/api/meta-conversion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event_name: 'Purchase',
+                event_source_url: window.location.href,
+                fbp: fbp,
+                fbc: fbc
+            })
+        });
+        console.log('CAPI event sent successfully');
+    } catch (e) {
+        console.error('Error sending CAPI event', e);
+    }
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
 }
 
 // ===== SCROLL SUAVE =====
