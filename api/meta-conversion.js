@@ -76,9 +76,7 @@ export default async function handler(req, res) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    input: "Venda $100.00 MXN", // Dynamic input if supported by the notification
-                    text: "Nova doação recebida! 💰",
-                    title: "Venda Aprovada"
+                    input: "Venda $100.00 MXN" // Passa apenas o valor como input para a notificação configurada
                 })
             });
             console.log('Pushcut notification sent successfully');
