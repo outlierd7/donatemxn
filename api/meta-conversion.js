@@ -73,11 +73,7 @@ export default async function handler(req, res) {
         try {
             const pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1';
             await fetch(pushcutUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    input: "Venda $100.00 MXN" // Passa apenas o valor como input para a notificação configurada
-                })
+                method: 'POST'
             });
             console.log('Pushcut notification sent successfully');
         } catch (pushError) {
