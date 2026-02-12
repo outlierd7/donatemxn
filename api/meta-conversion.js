@@ -18,8 +18,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        const PIXEL_ID = '920956627110903'; // Extracted from index.html
-        const ACCESS_TOKEN = 'EAAZBywifZB9rcBQivEfl2yE0XsNVtTYOTL92AJQDBwxJ3WhkGixbThccNwEguz77x5mP1AsKLNDkodomSvjVN1k4p43Twy01Ih9I7KZCYTOLQrPCzYtbV44cH8kQGsQ4Vr8rVlHmpRxnQwdYWu1kFoZAjPxWgZByZCd4ziJSnyi5ja3ZCJ9ZBVUC4iCghKVKwAZDZD';
+        const PIXEL_ID = '1418616516483655'; // New Pixel ID
+        const ACCESS_TOKEN = 'EAAMMWyh291EBQnRTR2EOQzBdm4DJt8dhKCv1ffWPrHCZAfT0qLExFKvgZA5kZCYvMCDyHtRwZCZAZCSnCMD0ZC2KE6KktrKBuWEfMCVITwot5iBVrq6jHDotthY1jZCiWDDEcnY0mR5zTm50BUxquRJXiH0wySqqDEIS7gzqjHXHybpvArqVNfZColSByk8HqKwZDZD';
 
         const { event_name, event_source_url, fbp, fbc } = req.body;
 
