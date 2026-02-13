@@ -35,37 +35,37 @@ function initializeProgressiveImageLoading() {
     // Lista de imagens em ordem de prioridade (de cima para baixo)
     const imagePriority = [
         // Prioridade 1: Logo e banners principais (carregam imediatamente)
-        'images/logosemfundo2.png',
-        'images/banner1novo.png',
-        'images/banner2novo.png',
-        'images/logo.png',
+        '../images/logosemfundo2.png',
+        '../images/banner1novo.png',
+        '../images/banner2novo.png',
+        '../images/logo.png',
 
         // Prioridade 2: Imagens do carrossel de transformações (carregam logo após)
-        'images/guerreiro1.webp',
-        'images/guerreiro2.webp',
-        'images/theodoro1.webp',
-        'images/theodoro2.webp',
-        'images/antes1.png',
-        'images/depois1.png',
-        'images/antes 2.png',
-        'images/depois 2.png',
-        'images/antes 3.png',
-        'images/depois 3.png',
-        'images/antes 4.png',
-        'images/depois 4.png',
+        '../images/guerreiro1.webp',
+        '../images/guerreiro2.webp',
+        '../images/theodoro1.webp',
+        '../images/theodoro2.webp',
+        '../images/antes1.png',
+        '../images/depois1.png',
+        '../images/antes 2.png',
+        '../images/depois 2.png',
+        '../images/antes 3.png',
+        '../images/depois 3.png',
+        '../images/antes 4.png',
+        '../images/depois 4.png',
 
         // Prioridade 3: Imagens dos depoimentos (carregam em seguida)
-        'images/daniela.webp',
-        'images/1.png',
-        'images/2.png',
-        'images/3.png',
-        'images/4.png',
-        'images/8.png',
-        'images/9.png',
-        'images/10.png',
+        '../images/daniela.webp',
+        '../images/1.png',
+        '../images/2.png',
+        '../images/3.png',
+        '../images/4.png',
+        '../images/8.png',
+        '../images/9.png',
+        '../images/10.png',
 
         // Prioridade 4: Outras imagens (carregam por último)
-        'images/pixxx.png'
+        '../images/pixxx.png'
     ];
 
     // Função para carregar uma imagem
@@ -871,6 +871,41 @@ function getCookie(name) {
     return null;
 }
 
+// 4. Função para rastrear intenção de doação (Clique no botão "Quiero ajudar")
+async function trackDonateEvent() {
+    console.log('Track Donate Event initiated');
+
+    // 1. Dispara Pixel do Facebook (Browser Side)
+    if (typeof fbq === 'function') {
+        fbq('track', 'Donate', {
+            value: 0.00, // Valor simbólico para intenção
+            currency: 'MXN'
+        }, { eventID: 'donate_' + new Date().getTime() });
+    }
+
+    // 2. Dispara CAPI (Server Side)
+    try {
+        const fbp = getCookie('_fbp');
+        const fbc = getCookie('_fbc');
+
+        await fetch('/api/meta-conversion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event_name: 'Donate', // Nome do evento
+                event_source_url: window.location.href,
+                fbp: fbp,
+                fbc: fbc
+            })
+        });
+        console.log('CAPI Donate event sent successfully');
+    } catch (e) {
+        console.error('Error sending CAPI Donate event', e);
+    }
+}
+
 // ===== SCROLL SUAVE =====
 
 
@@ -1060,6 +1095,7 @@ window.prevTestimonial = prevTestimonial;
 window.nextTransformation = nextTransformation;
 window.prevTransformation = prevTransformation;
 window.copyPixKey = copyPixKey;
+window.trackDonateEvent = trackDonateEvent;
 
 // Função simples para scroll para seção de doação
 window.scrollToDonation = function () {
