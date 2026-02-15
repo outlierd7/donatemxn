@@ -70,15 +70,17 @@ export default async function handler(req, res) {
         }
 
         // --- PUSHCUT INTEGRATION ---
-        try {
-            const pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1';
-            await fetch(pushcutUrl, {
-                method: 'POST'
-            });
-            console.log('Pushcut notification sent successfully');
-        } catch (pushError) {
-            console.error('Pushcut Error:', pushError);
-            // Don't fail the main request if notification fails
+        if (event_name === 'Purchase') {
+            try {
+                const pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1';
+                await fetch(pushcutUrl, {
+                    method: 'POST'
+                });
+                console.log('Pushcut notification sent successfully');
+            } catch (pushError) {
+                console.error('Pushcut Error:', pushError);
+                // Don't fail the main request if notification fails
+            }
         }
         // ---------------------------
 
