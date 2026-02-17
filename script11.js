@@ -759,7 +759,8 @@ function showCopySuccess(button, type) {
     button.innerHTML = `<span class="copy-icon">✅</span> ${type} copiada!`;
 
     // Rastreamento de Conversão (Purchase) - Com Deduplicação e CAPI
-    trackPurchaseEvent();
+    // Rastreamento de Conversão (Purchase) - Com Deduplicação e CAPI
+    trackPurchaseEvent(type);
 
     // Volta ao estado original após 3 segundos
     setTimeout(() => {
@@ -785,7 +786,7 @@ function showCopyError(button, text) {
 
 // ===== RASTREAMENTO E CAPI =====
 
-function trackPurchaseEvent() {
+function trackPurchaseEvent(paymentMethod) {
     // 1. Deduplicação por Sessão
     if (sessionStorage.getItem('purchase_tracked')) {
         console.log('Purchase event already tracked in this session. Skipping.');
@@ -804,10 +805,11 @@ function trackPurchaseEvent() {
     }
 
     // 3. Dispara CAPI (Server Side) via Vercel Function
-    sendCAPIEven();
+    // 3. Dispara CAPI (Server Side) via Vercel Function
+    sendCAPIEven(paymentMethod);
 }
 
-async function sendCAPIEven() {
+async function sendCAPIEven(paymentMethod) {
     try {
         const fbp = getCookie('_fbp');
         const fbc = getCookie('_fbc');
@@ -821,7 +823,10 @@ async function sendCAPIEven() {
                 event_name: 'Purchase',
                 event_source_url: window.location.href,
                 fbp: fbp,
-                fbc: fbc
+                event_source_url: window.location.href,
+                fbp: fbp,
+                fbc: fbc,
+                payment_method: paymentMethod
             })
         });
         console.log('CAPI event sent successfully');

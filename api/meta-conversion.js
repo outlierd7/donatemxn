@@ -72,11 +72,17 @@ export default async function handler(req, res) {
         // --- PUSHCUT INTEGRATION ---
         if (event_name === 'Purchase') {
             try {
-                const pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1';
+                let pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1'; // Default (CLABE)
+
+                // Se for OXXO, usa a notificação específica (sem o "1" no final)
+                if (req.body.payment_method && req.body.payment_method.includes('OXXO')) {
+                    pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o';
+                }
+
                 await fetch(pushcutUrl, {
                     method: 'POST'
                 });
-                console.log('Pushcut notification sent successfully');
+                console.log(`Pushcut notification sent successfully to: ${pushcutUrl}`);
             } catch (pushError) {
                 console.error('Pushcut Error:', pushError);
                 // Don't fail the main request if notification fails
