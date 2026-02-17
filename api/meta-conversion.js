@@ -42,7 +42,7 @@ export default async function handler(req, res) {
                     },
                     custom_data: {
                         currency: 'MXN',
-                        value: 100.00,
+                        value: 69.00,
                     },
                 },
             ],

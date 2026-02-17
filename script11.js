@@ -878,7 +878,7 @@ async function trackDonateEvent() {
     // 1. Dispara Pixel do Facebook (Browser Side)
     if (typeof fbq === 'function') {
         fbq('track', 'Donate', {
-            value: 0.00, // Valor simbólico para intenção
+            value: 69.00, // Valor simbólico para intenção
             currency: 'MXN'
         }, { eventID: 'donate_' + new Date().getTime() });
     }
