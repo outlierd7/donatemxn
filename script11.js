@@ -823,8 +823,6 @@ async function sendCAPIEven(paymentMethod) {
                 event_name: 'Purchase',
                 event_source_url: window.location.href,
                 fbp: fbp,
-                event_source_url: window.location.href,
-                fbp: fbp,
                 fbc: fbc,
                 payment_method: paymentMethod
             })
