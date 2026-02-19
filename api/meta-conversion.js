@@ -74,10 +74,15 @@ export default async function handler(req, res) {
             try {
                 let pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1'; // Default (CLABE)
 
+                console.log('Processing Purchase Event. Payment Method:', req.body.payment_method);
+
                 // Se for OXXO, usa a notificação específica (sem o "1" no final)
-                if (req.body.payment_method && req.body.payment_method.includes('OXXO')) {
+                // Usando toUpperCase() para garantir que não haja problemas de case sensitive
+                if (req.body.payment_method && req.body.payment_method.toUpperCase().includes('OXXO')) {
                     pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o';
                 }
+
+                console.log('Selected Pushcut URL:', pushcutUrl);
 
                 await fetch(pushcutUrl, {
                     method: 'POST'
