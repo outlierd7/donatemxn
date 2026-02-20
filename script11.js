@@ -839,41 +839,6 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
     return null;
 }
-
-
-
-
-
-async function sendCAPIEven() {
-    try {
-        const fbp = getCookie('_fbp');
-        const fbc = getCookie('_fbc');
-
-        await fetch('/api/meta-conversion', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                event_name: 'Purchase',
-                event_source_url: window.location.href,
-                fbp: fbp,
-                fbc: fbc
-            })
-        });
-        console.log('CAPI event sent successfully');
-    } catch (e) {
-        console.error('Error sending CAPI event', e);
-    }
-}
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-}
-
 // 4. Função para rastrear intenção de doação (Clique no botão "Quiero ajudar")
 async function trackDonateEvent() {
     console.log('Track Donate Event initiated');
