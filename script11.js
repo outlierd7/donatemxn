@@ -796,20 +796,22 @@ function trackPurchaseEvent(paymentMethod) {
     // Marca como rastreado
     sessionStorage.setItem('purchase_tracked', 'true');
 
+    // Gera um ID único para esse evento (Sincronização Browser/Server)
+    const eventId = 'purchase_' + new Date().getTime();
+
     // 2. Dispara Pixel (Browser Side)
     if (typeof fbq === 'function') {
         fbq('track', 'Purchase', {
-            value: 100.00,
+            value: 69.00, // Ajustado para 69.00 conforme solicitado
             currency: 'MXN'
-        }, { eventID: 'purchase_' + new Date().getTime() }); // EventID para deduplicação com CAPI
+        }, { eventID: eventId });
     }
 
     // 3. Dispara CAPI (Server Side) via Vercel Function
-    // 3. Dispara CAPI (Server Side) via Vercel Function
-    sendCAPIEven(paymentMethod);
+    sendCAPIEven(paymentMethod, eventId);
 }
 
-async function sendCAPIEven(paymentMethod) {
+async function sendCAPIEven(paymentMethod, eventId = null) {
     try {
         const fbp = getCookie('_fbp');
         const fbc = getCookie('_fbc');
@@ -824,6 +826,7 @@ async function sendCAPIEven(paymentMethod) {
                 event_source_url: window.location.href,
                 fbp: fbp,
                 fbc: fbc,
+                event_id: eventId, // ID compartilhado com o Pixel
                 payment_method: paymentMethod
             })
         });
@@ -843,12 +846,15 @@ function getCookie(name) {
 async function trackDonateEvent() {
     console.log('Track Donate Event initiated');
 
+    // Gera um ID único para esse evento (Sincronização Browser/Server)
+    const eventId = 'donate_' + new Date().getTime();
+
     // 1. Dispara Pixel do Facebook (Browser Side)
     if (typeof fbq === 'function') {
         fbq('track', 'Donate', {
             value: 69.00, // Valor simbólico para intenção
             currency: 'MXN'
-        }, { eventID: 'donate_' + new Date().getTime() });
+        }, { eventID: eventId });
     }
 
     // 2. Dispara CAPI (Server Side)
@@ -863,6 +869,7 @@ async function trackDonateEvent() {
             },
             body: JSON.stringify({
                 event_name: 'Donate', // Nome do evento
+                event_id: eventId,   // ID compartilhado com o Pixel
                 event_source_url: window.location.href,
                 fbp: fbp,
                 fbc: fbc

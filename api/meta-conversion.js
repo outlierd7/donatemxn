@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         const PIXEL_ID = '1418616516483655'; // New Pixel ID
         const ACCESS_TOKEN = 'EAAMMWyh291EBQnRTR2EOQzBdm4DJt8dhKCv1ffWPrHCZAfT0qLExFKvgZA5kZCYvMCDyHtRwZCZAZCSnCMD0ZC2KE6KktrKBuWEfMCVITwot5iBVrq6jHDotthY1jZCiWDDEcnY0mR5zTm50BUxquRJXiH0wySqqDEIS7gzqjHXHybpvArqVNfZColSByk8HqKwZDZD';
 
-        const { event_name, event_source_url, fbp, fbc } = req.body;
+        const { event_name, event_source_url, fbp, fbc, event_id, payment_method } = req.body;
 
         // Get client IP and User Agent
         const client_ip_address = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
@@ -32,6 +32,7 @@ export default async function handler(req, res) {
                 {
                     event_name: event_name || 'Purchase',
                     event_time: Math.floor(Date.now() / 1000),
+                    event_id: event_id, // Shared ID for deduplication
                     action_source: 'website',
                     event_source_url: event_source_url,
                     user_data: {
@@ -42,7 +43,7 @@ export default async function handler(req, res) {
                     },
                     custom_data: {
                         currency: 'MXN',
-                        value: 69.00,
+                        value: 69.00, // Shared value with Pixel
                     },
                 },
             ],
