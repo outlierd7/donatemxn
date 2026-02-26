@@ -202,19 +202,35 @@
 			}
 
 			.urgency-bar {
-				font-size: 12px;
-				padding: 10px;
+				font-size: 11px;
+				padding: 12px 10px;
 			}
 
 			.urgency-bar>div:first-child {
 				display: flex;
 				flex-direction: column;
-				gap: 4px;
+				gap: 5px;
+				width: 100%;
+			}
+
+			.urgency-bar .headline-top {
+				font-size: 13px;
+				letter-spacing: -0.2px;
+			}
+
+			.urgency-bar .headline-sub {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 8px;
+				opacity: 0.9;
 			}
 
 			.urgency-bar span#urgency-countdown {
 				margin-left: 0;
 				font-size: 11px;
+				background: rgba(0, 0, 0, 0.2);
+				padding: 1px 6px;
 			}
 		}
 	</style>
@@ -294,11 +310,15 @@
 
 	<div class="urgency-bar">
 		<div>
-			Faltan <strong>$12,450 MXN</strong> para ración esta semana – <strong>62%</strong> • <span
-				id="urgency-countdown"></span>
+			<div class="headline-top">
+				Faltan <strong id="urgency-amount">$12,450 MXN</strong> para ración esta semana
+			</div>
+			<div class="headline-sub">
+				<strong id="urgency-percent">62%</strong> • <span id="urgency-countdown"></span>
+			</div>
 		</div>
 		<div class="progress-container">
-			<div class="progress-fill"></div>
+			<div id="urgency-fill" class="progress-fill" style="width: 62%;"></div>
 		</div>
 	</div>
 
@@ -874,7 +894,12 @@
 	<!-- Social Proof Logic -->
 	<script>
 		(function () {
-			console.log('Social Proof Logic Initializing (v3)...');
+			console.log('Social Proof Logic Initializing (Dynamic v4)...');
+
+			// Configuration
+			let currentAmount = 12450;
+			let currentPercent = 62;
+			const targetPercent = 100;
 
 			function initApp() {
 				initUrgencyBar();
@@ -885,6 +910,31 @@
 				document.addEventListener('DOMContentLoaded', initApp);
 			} else {
 				initApp();
+			}
+
+			function updateUrgencyBar(donationAmount) {
+				const amountEl = document.getElementById('urgency-amount');
+				const percentEl = document.getElementById('urgency-percent');
+				const fillEl = document.getElementById('urgency-fill');
+
+				if (!amountEl || !percentEl || !fillEl) return;
+
+				// Decrease remaining amount
+				currentAmount -= donationAmount;
+				if (currentAmount < 500) currentAmount = 500; // Cap at realistic minimum
+
+				// Increase percentage slightly (weighted by donation size)
+				const percentIncrease = (donationAmount / 2000);
+				currentPercent += percentIncrease;
+				if (currentPercent > 99) currentPercent = 99; // Cap before 100%
+
+				// Update UI
+				amountEl.textContent = `$${currentAmount.toLocaleString()} MXN`;
+				percentEl.textContent = `${Math.floor(currentPercent)}%`;
+				fillEl.style.width = `${currentPercent}%`;
+
+				// Pulse animation on bar
+				fillEl.style.transition = 'width 1s ease-out';
 			}
 
 			function initUrgencyBar() {
@@ -916,7 +966,8 @@
 				function show() {
 					const name = names[Math.floor(Math.random() * names.length)];
 					const city = cities[Math.floor(Math.random() * cities.length)];
-					const amount = [50, 100, 150, 200, 300, 500, 1000][Math.floor(Math.random() * 7)];
+					const amounts = [50, 100, 150, 200, 300, 500, 1000];
+					const donationAmount = amounts[Math.floor(Math.random() * amounts.length)];
 					const msg = messages[Math.floor(Math.random() * messages.length)];
 					const time = Math.floor(Math.random() * 50) + 5;
 
@@ -925,12 +976,15 @@
 					popup.innerHTML = `
 						<div class="popup-icon">🐾</div>
 						<div class="popup-content">
-							<p class="popup-text">¡<strong>${name}</strong> de <strong>${city}</strong> donó <strong>$${amount} MXN</strong> hace ${time}s!</p>
+							<p class="popup-text">¡<strong>${name}</strong> de <strong>${city}</strong> donó <strong>$${donationAmount} MXN</strong> hace ${time}s!</p>
 							<p class="popup-subtext">${msg}</p>
 						</div>
 						<button class="popup-close" onclick="this.parentElement.remove()">×</button>
 					`;
 					container.appendChild(popup);
+
+					// Update Urgency Bar Dynamicly!
+					updateUrgencyBar(donationAmount);
 
 					// Auto-remove
 					setTimeout(() => {
