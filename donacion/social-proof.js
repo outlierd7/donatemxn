@@ -1,19 +1,30 @@
 /**
- * LIVE SOCIAL PROOF & URGENCY BAR LOGIC
+ * LIVE SOCIAL PROOF & URGENCY BAR LOGIC - REFIXED
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+console.log('Social Proof Script Loaded');
+
+function initSocialProofApp() {
+    console.log('Initializing Social Proof & Urgency Bar...');
     initUrgencyBar();
     initSocialProof();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSocialProofApp);
+} else {
+    initSocialProofApp();
+}
 
 // --- URGENCY BAR ---
 function initUrgencyBar() {
     const countdownElement = document.getElementById('urgency-countdown');
-    if (!countdownElement) return;
+    if (!countdownElement) {
+        console.warn('Urgency countdown element not found');
+        return;
+    }
 
-    // Set initial remaining time in seconds (e.g., 41 hours as requested)
-    let totalSeconds = 41 * 3600 + 45 * 60; // 41h 45m
+    let totalSeconds = 41 * 3600 + 45 * 60;
 
     function updateCountdown() {
         const hours = Math.floor(totalSeconds / 3600);
@@ -26,7 +37,7 @@ function initUrgencyBar() {
             totalSeconds--;
         } else {
             clearInterval(countdownInterval);
-            countdownElement.textContent = "¡Última oportunidad!";
+            countdownElement.textContent = "Última oportunidad";
         }
     }
 
@@ -37,10 +48,13 @@ function initUrgencyBar() {
 // --- SOCIAL PROOF POP-UPS ---
 function initSocialProof() {
     const container = document.getElementById('social-proof-container');
-    if (!container) return;
+    if (!container) {
+        console.error('Social proof container NOT found in DOM');
+        return;
+    }
 
-    const names = ["Carlos", "María", "Eduardo", "Lucía", "Andrés", "Valeria", "Ricardo", "Sofía", "Jorge", "Elena"];
-    const cities = ["Guadalajara", "CDMX", "Monterrey", "Zapopan", "Querétaro", "Puebla", "Mérida", "Cancún", "León", "Tijuana"];
+    const names = ["Carlos", "María", "Eduardo", "Lucía", "Andrés", "Valeria", "Ricardo", "Sofía", "Jorge", "Elena", "Fernando", "Isabel", "Miguel", "Beatriz", "Raul"];
+    const cities = ["Guadalajara", "CDMX", "Monterrey", "Zapopan", "Querétaro", "Puebla", "Mérida", "Cancún", "León", "Tijuana", "Toluca", "Chihuahua"];
     const amounts = [50, 100, 150, 200, 300, 500, 1000];
     const messages = [
         "Salvó cirugía de Thor 🔥",
@@ -53,11 +67,12 @@ function initSocialProof() {
     ];
 
     function showPopup() {
+        console.log('Triggering Social Proof Popup');
         const name = names[Math.floor(Math.random() * names.length)];
         const city = cities[Math.floor(Math.random() * cities.length)];
         const amount = amounts[Math.floor(Math.random() * amounts.length)];
         const message = messages[Math.floor(Math.random() * messages.length)];
-        const time = Math.floor(Math.random() * 45) + 5; // hace 5s a 50s
+        const time = Math.floor(Math.random() * 45) + 5;
 
         const popup = document.createElement('div');
         popup.className = 'social-proof-popup';
@@ -72,18 +87,17 @@ function initSocialProof() {
 
         container.appendChild(popup);
 
-        // Remove after 7 seconds
+        // Auto-remove
         setTimeout(() => {
             popup.classList.add('out');
             setTimeout(() => popup.remove(), 500);
         }, 7000);
     }
 
-    // Start cycling pop-ups
-    // Faster first trigger (10s), then every 20-40s random
-    setTimeout(function cycle() {
+    // Trigger FIRST notification after 2 seconds instead of 10
+    setTimeout(() => {
         showPopup();
-        const nextTime = (Math.floor(Math.random() * 20) + 20) * 1000;
-        setTimeout(cycle, nextTime);
-    }, 10000);
+        // Continue cycle
+        setInterval(showPopup, 25000 + Math.random() * 15000);
+    }, 2000);
 }
