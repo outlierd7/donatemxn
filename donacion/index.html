@@ -43,40 +43,48 @@
 		/* Urgency Bar */
 		.urgency-bar {
 			background: #e67e22;
-			/* Orange to match site */
 			color: #fff;
 			text-align: center;
-			padding: 8px 10px;
-			font-size: 13px;
+			padding: 10px 15px;
+			font-size: 14px;
 			font-weight: 700;
 			position: sticky;
 			top: 0;
 			z-index: 10000;
-			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			gap: 3px;
+			gap: 6px;
 			line-height: 1.2;
 		}
 
+		.urgency-bar span#urgency-countdown {
+			color: #fff;
+			background: rgba(0, 0, 0, 0.15);
+			padding: 2px 8px;
+			border-radius: 4px;
+			margin-left: 5px;
+			font-variant-numeric: tabular-nums;
+		}
+
 		.urgency-bar .progress-container {
-			width: 90%;
+			width: 100%;
 			max-width: 500px;
 			background: rgba(255, 255, 255, 0.3);
-			height: 6px;
-			border-radius: 3px;
+			height: 8px;
+			border-radius: 4px;
 			overflow: hidden;
-			margin-top: 2px;
 		}
 
 		.urgency-bar .progress-fill {
 			width: 62%;
 			background: #fff;
 			height: 100%;
-			border-radius: 3px;
+			border-radius: 4px;
 			animation: progress-glow 2s infinite alternate;
+			box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 		}
 
 		@keyframes progress-glow {
@@ -86,34 +94,34 @@
 
 			to {
 				opacity: 1;
-				box-shadow: 0 0 10px #fff;
+				filter: brightness(1.2);
 			}
 		}
 
 		/* Social Proof Popups */
 		#social-proof-container {
 			position: fixed;
-			bottom: 20px;
-			right: 20px;
+			bottom: 30px;
+			right: 30px;
 			z-index: 11000;
-			width: 300px;
+			width: 320px;
 			display: flex;
 			flex-direction: column;
-			gap: 10px;
+			gap: 15px;
 			pointer-events: none;
 		}
 
 		.social-proof-popup {
 			background: #fff;
-			border-radius: 12px;
-			padding: 12px;
-			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+			border-radius: 16px;
+			padding: 16px;
+			box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 			display: flex;
 			align-items: center;
-			gap: 10px;
+			gap: 14px;
 			pointer-events: auto;
-			animation: popup-in 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-			border-left: 5px solid #e67e22;
+			animation: popup-in 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+			border-left: 6px solid #e67e22;
 			position: relative;
 		}
 
@@ -122,10 +130,10 @@
 		}
 
 		.popup-icon {
-			font-size: 20px;
+			font-size: 28px;
 			background: #fff3e0;
-			padding: 6px;
-			border-radius: 50%;
+			padding: 10px;
+			border-radius: 12px;
 			flex-shrink: 0;
 		}
 
@@ -136,62 +144,77 @@
 		.popup-text {
 			margin: 0;
 			color: #333;
-			font-size: 13px;
-			line-height: 1.3;
+			font-size: 14px;
+			line-height: 1.4;
 		}
 
 		.popup-subtext {
-			margin: 3px 0 0;
+			margin: 4px 0 0;
 			color: #e67e22;
-			font-size: 11px;
+			font-size: 12px;
 			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
 		}
 
 		.popup-close {
 			position: absolute;
-			top: 3px;
-			right: 3px;
+			top: 8px;
+			right: 8px;
 			background: none;
 			border: none;
-			color: #ccc;
+			color: #ddd;
 			cursor: pointer;
-			font-size: 16px;
+			font-size: 20px;
+			transition: color 0.2s;
+		}
+
+		.popup-close:hover {
+			color: #999;
 		}
 
 		@keyframes popup-in {
 			from {
 				opacity: 0;
-				transform: translateY(50px) scale(0.8);
+				transform: translateX(100px) scale(0.9);
 			}
 
 			to {
 				opacity: 1;
-				transform: translateY(0) scale(1);
+				transform: translateX(0) scale(1);
 			}
 		}
 
 		@keyframes popup-out {
 			to {
 				opacity: 0;
-				transform: translateX(100px);
+				transform: translateX(150px);
 			}
 		}
 
 		@media (max-width: 480px) {
 			#social-proof-container {
-				right: 10px;
+				right: 15px;
+				left: 15px;
 				bottom: 15px;
-				width: calc(100% - 20px);
-				max-width: 340px;
+				width: auto;
+				max-width: none;
 			}
 
 			.urgency-bar {
-				font-size: 11px;
-				padding: 6px 8px;
+				font-size: 12px;
+				padding: 10px;
 			}
 
-			.urgency-bar strong {
-				display: inline-block;
+			.urgency-bar>div:first-child {
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
+
+			.urgency-bar span#urgency-countdown {
+				margin-left: 0;
+				font-size: 11px;
 			}
 		}
 	</style>
@@ -790,7 +813,7 @@
 				<h2>Sé parte de esta historia</h2>
 				<p>Cada donación, cada acción, cada gesto de amor hace la diferencia en la vida de cientos de animales
 					que dependen de nuestra ayuda.</p>
-				<button class="cta-btn" onclick="trackDonateEvent(); scrollToDonation()">
+				<button class="cta-btn" onclick="trackInitiateCheckoutEvent(); scrollToDonation()">
 					Quiero ayudar ahora ❤️
 				</button>
 			</div>
@@ -843,15 +866,89 @@
 	</footer>
 
 	<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
 	<!-- Social Proof Container -->
 	<div id="social-proof-container"></div>
 
 	<script src="../script11.js"></script>
-	<script src="social-proof.js"></script>
+	<!-- Social Proof Logic -->
+	<script>
+		(function () {
+			console.log('Social Proof Logic Initializing (v3)...');
+
+			function initApp() {
+				initUrgencyBar();
+				initSocialProof();
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initApp);
+			} else {
+				initApp();
+			}
+
+			function initUrgencyBar() {
+				const el = document.getElementById('urgency-countdown');
+				if (!el) return;
+				let seconds = 41 * 3600 + 45 * 60;
+				function update() {
+					const h = Math.floor(seconds / 3600);
+					const m = Math.floor((seconds % 3600) / 60);
+					const s = seconds % 60;
+					el.textContent = `${h}h ${m}m ${s}s restantes`;
+					if (seconds > 0) seconds--;
+				}
+				setInterval(update, 1000);
+				update();
+			}
+
+			function initSocialProof() {
+				const container = document.getElementById('social-proof-container');
+				if (!container) {
+					console.error('Social proof container NOT found');
+					return;
+				}
+
+				const names = ["Carlos", "María", "Eduardo", "Lucía", "Andrés", "Valeria", "Ricardo", "Sofía", "Jorge", "Elena", "Fernando", "Isabel", "Miguel"];
+				const cities = ["Guadalajara", "CDMX", "Monterrey", "Zapopan", "Querétaro", "Puebla", "Mérida", "Cancún", "León", "Tijuana"];
+				const messages = ["Salvó cirugía de Thor 🔥", "Garantizó 1 semana de croquetas 🦴", "Ayudó con vacunas de Kira 💉", "Donó para el refugio 🐾", "Contribuyó con medicinas vitales 💊"];
+
+				function show() {
+					const name = names[Math.floor(Math.random() * names.length)];
+					const city = cities[Math.floor(Math.random() * cities.length)];
+					const amount = [50, 100, 150, 200, 300, 500, 1000][Math.floor(Math.random() * 7)];
+					const msg = messages[Math.floor(Math.random() * messages.length)];
+					const time = Math.floor(Math.random() * 50) + 5;
+
+					const popup = document.createElement('div');
+					popup.className = 'social-proof-popup';
+					popup.innerHTML = `
+						<div class="popup-icon">🐾</div>
+						<div class="popup-content">
+							<p class="popup-text">¡<strong>${name}</strong> de <strong>${city}</strong> donó <strong>$${amount} MXN</strong> hace ${time}s!</p>
+							<p class="popup-subtext">${msg}</p>
+						</div>
+						<button class="popup-close" onclick="this.parentElement.remove()">×</button>
+					`;
+					container.appendChild(popup);
+
+					// Auto-remove
+					setTimeout(() => {
+						popup.classList.add('out');
+						setTimeout(() => popup.remove(), 600);
+					}, 7000);
+				}
+
+				// Trigger first one FAST (1s)
+				setTimeout(show, 1000);
+				// Continue cycle
+				setInterval(show, 25000 + Math.random() * 15000);
+			}
+		})();
+	</script>
 	<script>
 		// Otimização de carregamento de imagens
 		document.addEventListener('DOMContentLoaded', function () {
-			// Otimizar imagens críticas
 			const criticalImages = document.querySelectorAll('.header-logo-img, .banner-image');
 			criticalImages.forEach(img => {
 				if (img.complete) {
@@ -860,56 +957,14 @@
 					img.addEventListener('load', function () {
 						this.classList.add('loaded');
 					});
-					img.addEventListener('error', function () {
-						this.style.display = 'none';
-					});
 				}
 			});
-
-			// Lazy loading para outras imagens
-			const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-			if ('IntersectionObserver' in window) {
-				const imageObserver = new IntersectionObserver((entries, observer) => {
-					entries.forEach(entry => {
-						if (entry.isIntersecting) {
-							const img = entry.target;
-							img.classList.add('loaded');
-							observer.unobserve(img);
-						}
-					});
-				});
-
-				lazyImages.forEach(img => imageObserver.observe(img));
-			}
-
-			// Script para garantir que a imagem PIX seja exibida corretamente
-			const pixImage = document.querySelector('.pix-qr');
-			if (pixImage) {
-				pixImage.style.maxWidth = '300px';
-				pixImage.style.width = 'auto';
-				pixImage.style.height = 'auto';
-				pixImage.style.display = 'block';
-				pixImage.style.margin = '0 auto';
-				pixImage.style.objectFit = 'contain';
-				pixImage.style.objectPosition = 'center';
-
-				pixImage.addEventListener('load', function () {
-					this.style.visibility = 'visible';
-					this.classList.add('loaded');
-				});
-
-				setTimeout(function () {
-					if (pixImage.style.visibility !== 'visible') {
-						pixImage.style.visibility = 'visible';
-					}
-				}, 1000);
-			}
 		});
 	</script>
 	<script defer
 		src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
 		integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-		data-cf-beacon='{"version":"2024.11.0","token":"7e776ead8804401ebcdbf52ae1f94cbc","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+		data-cf-beacon='{"version":"2024.11.0","token":"7e776ead8804401ebcdbf52ae1f94cbc","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
 		crossorigin="anonymous"></script>
 </body>
 
