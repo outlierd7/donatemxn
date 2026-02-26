@@ -842,16 +842,16 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
     return null;
 }
-// 4. Função para rastrear intenção de doação (Clique no botão "Quiero ajudar")
-async function trackDonateEvent() {
-    console.log('Track Donate Event initiated');
+// 4. Função para rastrear intenção de doação (Clique no botão "¡QUIERO AYUDAR HOY!")
+async function trackInitiateCheckoutEvent() {
+    console.log('Track InitiateCheckout Event initiated');
 
     // Gera um ID único para esse evento (Sincronização Browser/Server)
-    const eventId = 'donate_' + new Date().getTime();
+    const eventId = 'initiate_checkout_' + new Date().getTime();
 
     // 1. Dispara Pixel do Facebook (Browser Side)
     if (typeof fbq === 'function') {
-        fbq('track', 'Donate', {
+        fbq('track', 'InitiateCheckout', {
             value: 69.00, // Valor simbólico para intenção
             currency: 'MXN'
         }, { eventID: eventId });
@@ -868,16 +868,16 @@ async function trackDonateEvent() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                event_name: 'Donate', // Nome do evento
+                event_name: 'InitiateCheckout', // Nome do evento
                 event_id: eventId,   // ID compartilhado com o Pixel
                 event_source_url: window.location.href,
                 fbp: fbp,
                 fbc: fbc
             })
         });
-        console.log('CAPI Donate event sent successfully');
+        console.log('CAPI InitiateCheckout event sent successfully');
     } catch (e) {
-        console.error('Error sending CAPI Donate event', e);
+        console.error('Error sending CAPI InitiateCheckout event', e);
     }
 }
 
