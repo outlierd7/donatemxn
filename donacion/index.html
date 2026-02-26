@@ -79,12 +79,12 @@
 		}
 
 		.urgency-bar .progress-fill {
-			width: 62%;
-			background: #fff;
+			background: #f0faff;
 			height: 100%;
 			border-radius: 4px;
 			animation: progress-glow 2s infinite alternate;
-			box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+			box-shadow: 0 0 15px rgba(200, 230, 255, 0.8), 0 0 5px #fff;
+			transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 		}
 
 		@keyframes progress-glow {
@@ -924,17 +924,15 @@
 				if (currentAmount < 500) currentAmount = 500; // Cap at realistic minimum
 
 				// Increase percentage slightly (weighted by donation size)
-				const percentIncrease = (donationAmount / 2000);
+				// Small donations give 0.5%, Large ones give up to 1.5%
+				const percentIncrease = 0.5 + (donationAmount / 1000);
 				currentPercent += percentIncrease;
-				if (currentPercent > 99) currentPercent = 99; // Cap before 100%
+				if (currentPercent > 99.5) currentPercent = 99.5; // Cap before 100%
 
 				// Update UI
 				amountEl.textContent = `$${currentAmount.toLocaleString()} MXN`;
 				percentEl.textContent = `${Math.floor(currentPercent)}%`;
 				fillEl.style.width = `${currentPercent}%`;
-
-				// Pulse animation on bar
-				fillEl.style.transition = 'width 1s ease-out';
 			}
 
 			function initUrgencyBar() {
