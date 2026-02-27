@@ -1,0 +1,23 @@
+{
+  "name": "caesbba",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script11.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outlierd7/donatemxn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/outlierd7/donatemxn/issues"
+  },
+  "homepage": "https://github.com/outlierd7/donatemxn#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.3.1"
+  }
+}
