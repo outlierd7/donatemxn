@@ -117,8 +117,8 @@ function initializeProgressiveImageLoading() {
         return null;
     }))).then(() => {
         console.log('✅ Imagens críticas carregadas!');
-        // Inicia o carregamento progressivo das demais imagens
-        loadImagesInBatches();
+        // Desativado: Causa 30MB de download desnecessário por usuário e gera custos absurdos de banda na Vercel
+        // loadImagesInBatches();
     });
 
     // Função para pré-carregar imagens dos carrosséis
@@ -138,13 +138,14 @@ function initializeProgressiveImageLoading() {
         ];
 
         carouselImages.forEach(src => {
-            const img = new Image();
-            img.src = src;
+            // Desativado pelo mesmo motivo (redução de custo de banda)
+            // const img = new Image();
+            // img.src = src;
         });
     }
 
     // Pré-carrega imagens dos carrosséis em background
-    setTimeout(preloadCarouselImages, 500);
+    // setTimeout(preloadCarouselImages, 500);
 }
 
 // ===== CAROUSEL DE DEPOIMENTOS =====
