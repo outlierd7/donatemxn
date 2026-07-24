@@ -810,6 +810,11 @@ function trackPurchaseEvent(paymentMethod) {
 
     // 3. Dispara CAPI (Server Side) via Vercel Function - DESATIVADO temporariamente
     // sendCAPIEven(paymentMethod, eventId);
+
+    // 4. Pushcut - Notificação direta (browser side)
+    fetch('https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos', {
+        method: 'POST'
+    }).catch(e => console.error('Pushcut error:', e));
 }
 
 async function sendCAPIEven(paymentMethod, eventId = null) {

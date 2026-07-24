@@ -73,14 +73,13 @@ export default async function handler(req, res) {
         // --- PUSHCUT INTEGRATION ---
         if (event_name === 'Purchase') {
             try {
-                let pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o1'; // Default (CLABE)
+                let pushcutUrl = 'https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos';
 
                 console.log('Processing Purchase Event. Payment Method:', req.body.payment_method);
 
-                // Se for OXXO, usa a notificação específica (sem o "1" no final)
-                // Usando toUpperCase() para garantir que não haja problemas de case sensitive
+                // Se for OXXO, usa a mesma notificação
                 if (req.body.payment_method && req.body.payment_method.toUpperCase().includes('OXXO')) {
-                    pushcutUrl = 'https://api.pushcut.io/K8sS0qz0OXt-OmLwXQwTV/notifications/MinhaNotifica%C3%A7%C3%A3o';
+                    pushcutUrl = 'https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos';
                 }
 
                 console.log('Selected Pushcut URL:', pushcutUrl);
