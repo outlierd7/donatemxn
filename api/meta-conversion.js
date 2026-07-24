@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const PIXEL_ID = '25792951000404704'; // New Pixel ID
+        const PIXEL_ID = '1507182014017324'; // New Pixel ID
         const ACCESS_TOKEN = 'EAAi4rHNHoAwBQZCut4OJDUZA35yBDsy3koiNYHgxUXDlFnzIqxNtrgqVnjjxnOOvZAcvfF0NBTR6vWSqgBUCYZB5LCx8UBUVatbOMgpoB2FVJ4Re5enWZCvm7hZCiFHJCrsNf0BEzZAyZAm5UZCRbJIqdxMlHZAYKRHrXY9eEZBacvSsD1ZAStp3Oql0cytjhXFizwkiLwZDZD';
 
         const { event_name, event_source_url, fbp, fbc, event_id, payment_method } = req.body;
