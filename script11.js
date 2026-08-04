@@ -797,19 +797,29 @@ function trackPurchaseEvent(paymentMethod) {
     // Marca como rastreado
     sessionStorage.setItem('purchase_tracked', 'true');
 
-    // Gera um ID único para esse evento (Sincronização Browser/Server)
-    const eventId = 'purchase_' + new Date().getTime();
+    const timestamp = new Date().getTime();
 
-    // 2. Dispara Pixel (Browser Side)
+    // IDs únicos e independentes para cada evento
+    const purchaseEventId = 'purchase_' + timestamp;
+    const donateEventId   = 'donate_'   + timestamp;
+
+    // 2. Dispara Pixel — Purchase (Browser Side)
     if (typeof fbq === 'function') {
         fbq('track', 'Purchase', {
-            value: 69.00, // Ajustado para 69.00 conforme solicitado
+            value: 69.00,
             currency: 'MXN'
-        }, { eventID: eventId });
+        }, { eventID: purchaseEventId });
+
+        // Dispara Pixel — Donate (Browser Side)
+        fbq('track', 'Donate', {
+            value: 69.00,
+            currency: 'MXN'
+        }, { eventID: donateEventId });
     }
 
-    // 3. Dispara CAPI (Server Side) via Vercel Function
-    sendCAPIEven(paymentMethod, eventId);
+    // 3. Dispara CAPI — Purchase e Donate (Server Side)
+    sendCAPIEven(paymentMethod, purchaseEventId, 'Purchase');
+    sendCAPIEven(paymentMethod, donateEventId,   'Donate');
 
     // 4. Pushcut - Notificação direta (browser side)
     fetch('https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos', {
@@ -817,7 +827,7 @@ function trackPurchaseEvent(paymentMethod) {
     }).catch(e => console.error('Pushcut error:', e));
 }
 
-async function sendCAPIEven(paymentMethod, eventId = null) {
+async function sendCAPIEven(paymentMethod, eventId = null, eventName = 'Purchase') {
     try {
         const fbp = getCookie('_fbp');
         const fbc = getCookie('_fbc');
@@ -828,17 +838,17 @@ async function sendCAPIEven(paymentMethod, eventId = null) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                event_name: 'Purchase',
+                event_name: eventName,
                 event_source_url: window.location.href,
                 fbp: fbp,
                 fbc: fbc,
-                event_id: eventId, // ID compartilhado com o Pixel
+                event_id: eventId,
                 payment_method: paymentMethod
             })
         });
-        console.log('CAPI event sent successfully');
+        console.log(`CAPI ${eventName} event sent successfully`);
     } catch (e) {
-        console.error('Error sending CAPI event', e);
+        console.error(`Error sending CAPI ${eventName} event`, e);
     }
 }
 
