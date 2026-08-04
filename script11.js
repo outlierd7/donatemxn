@@ -808,8 +808,8 @@ function trackPurchaseEvent(paymentMethod) {
         }, { eventID: eventId });
     }
 
-    // 3. Dispara CAPI (Server Side) via Vercel Function - DESATIVADO temporariamente
-    // sendCAPIEven(paymentMethod, eventId);
+    // 3. Dispara CAPI (Server Side) via Vercel Function
+    sendCAPIEven(paymentMethod, eventId);
 
     // 4. Pushcut - Notificação direta (browser side)
     fetch('https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos', {
@@ -863,25 +863,25 @@ async function trackInitiateCheckoutEvent() {
         }, { eventID: eventId });
     }
 
-    // 2. Dispara CAPI (Server Side) - DESATIVADO temporariamente
-    // try {
-    //     const fbp = getCookie('_fbp');
-    //     const fbc = getCookie('_fbc');
-    //     await fetch('/api/meta-conversion', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({
-    //             event_name: 'InitiateCheckout',
-    //             event_id: eventId,
-    //             event_source_url: window.location.href,
-    //             fbp: fbp,
-    //             fbc: fbc
-    //         })
-    //     });
-    //     console.log('CAPI InitiateCheckout event sent successfully');
-    // } catch (e) {
-    //     console.error('Error sending CAPI InitiateCheckout event', e);
-    // }
+    // 2. Dispara CAPI (Server Side)
+    try {
+        const fbp = getCookie('_fbp');
+        const fbc = getCookie('_fbc');
+        await fetch('/api/meta-conversion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                event_name: 'InitiateCheckout',
+                event_id: eventId,
+                event_source_url: window.location.href,
+                fbp: fbp,
+                fbc: fbc
+            })
+        });
+        console.log('CAPI InitiateCheckout event sent successfully');
+    } catch (e) {
+        console.error('Error sending CAPI InitiateCheckout event', e);
+    }
 }
 
 // ===== SCROLL SUAVE =====
