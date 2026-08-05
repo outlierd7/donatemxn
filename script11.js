@@ -821,10 +821,7 @@ function trackPurchaseEvent(paymentMethod) {
     sendCAPIEven(paymentMethod, purchaseEventId, 'Purchase');
     sendCAPIEven(paymentMethod, donateEventId,   'Donate');
 
-    // 4. Pushcut - Notificação direta (browser side)
-    fetch('https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos', {
-        method: 'POST'
-    }).catch(e => console.error('Pushcut error:', e));
+    // 4. Pushcut — enviado pelo servidor via CAPI (meta-conversion.js), não duplicar aqui
 }
 
 async function sendCAPIEven(paymentMethod, eventId = null, eventName = 'Purchase') {
