@@ -18,8 +18,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        const PIXEL_ID = '1558791332352151'; // New Pixel ID
-        const ACCESS_TOKEN = 'EAAXbAAXj4KkBSG5f8Vn3eXzMjVZBoJuatZAby9vZA7o77lw3hZBKb9ei4JtwUiEJLZAR7QuunwKvpI8ZC51hG1O6c16RZCo1scv71NF35ppZBa1akisb6hfyeW8d2aY6G8PYOLNZBR4ePxPuDIyzDqhqfApEOZAOpHg3neIZCX3ctTJI23zViqHV6dPZBFT3AENJjQZDZD';
+        const PIXEL_ID = '1771235990575381';
+        const ACCESS_TOKEN = 'EAAUC1YVIHhABSIHIhMWMzsWvfLZCsAFaUMVGLeDLnZBYICZArZA7K5zb4vxwyCwL4QgNb1FUuWJiZCpBvm8GMnSS3C3v4zGwg4T96dlcHORwkp1NF7WihW6J6nZCKVcXE2Rf0TSMVKZAGx6zWr5GoapNI2M7kZCclEuqbtX4hRnKJZBzvBqBYV5JdBq1BZBRJGzf2DZCwZDZD';
 
         const { event_name, event_source_url, fbp, fbc, event_id, payment_method } = req.body;
 
