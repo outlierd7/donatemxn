@@ -61,8 +61,8 @@ export default async function handler(req, res) {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        title: '💰 Nova Doação!',
-                        text: `Método: ${payment_method || 'CLABE/SPEI'} | Evento: ${event_name}`
+                        title: '💰Venda Realizada!',
+                        text: 'Valor: U$100,00'
                     })
                 });
                 console.log('Pushcut status:', pushRes.status);
