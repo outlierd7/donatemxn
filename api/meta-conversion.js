@@ -52,13 +52,31 @@ export default async function handler(req, res) {
 
         console.log('Sending event to Meta:', JSON.stringify(eventData, null, 2));
 
+        // --- PUSHCUT INTEGRATION — dispara ANTES da checagem de erro da Meta ---
+        if (event_name === 'Purchase') {
+            try {
+                const pushcutUrl = 'https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos';
+                console.log('Enviando Pushcut para:', pushcutUrl);
+                const pushRes = await fetch(pushcutUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: '💰 Nova Doação!',
+                        text: `Método: ${payment_method || 'CLABE/SPEI'} | Evento: ${event_name}`
+                    })
+                });
+                console.log('Pushcut status:', pushRes.status);
+            } catch (pushError) {
+                console.error('Pushcut Error:', pushError);
+            }
+        }
+        // -----------------------------------------------------------------------
+
         const response = await fetch(
             `https://graph.facebook.com/v19.0/${PIXEL_ID}/events`,
             {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(eventData),
             }
         );
@@ -69,31 +87,6 @@ export default async function handler(req, res) {
             console.error('Meta API Error:', data);
             return res.status(response.status).json(data);
         }
-
-        // --- PUSHCUT INTEGRATION ---
-        if (event_name === 'Purchase') {
-            try {
-                let pushcutUrl = 'https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos';
-
-                console.log('Processing Purchase Event. Payment Method:', req.body.payment_method);
-
-                // Se for OXXO, usa a mesma notificação
-                if (req.body.payment_method && req.body.payment_method.toUpperCase().includes('OXXO')) {
-                    pushcutUrl = 'https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos';
-                }
-
-                console.log('Selected Pushcut URL:', pushcutUrl);
-
-                await fetch(pushcutUrl, {
-                    method: 'POST'
-                });
-                console.log(`Pushcut notification sent successfully to: ${pushcutUrl}`);
-            } catch (pushError) {
-                console.error('Pushcut Error:', pushError);
-                // Don't fail the main request if notification fails
-            }
-        }
-        // ---------------------------
 
         return res.status(200).json({ success: true, data });
     } catch (error) {
