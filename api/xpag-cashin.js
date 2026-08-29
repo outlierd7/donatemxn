@@ -8,8 +8,8 @@ const XPAG_CLIENT_ID     = 'arcardi_44636137';
 const XPAG_CLIENT_SECRET = '7hwux06uel544xx8j707um31';
 const XPAG_BASE_URL      = 'https://api.xpag.global';
 
-// URL do Pipedream (relay neutro — oculta o domínio real do site para a XPag)
-const WEBHOOK_URL = 'https://eoteq258mleg6vk.m.pipedream.net';
+// URL do webhook — domínio genérico Vercel (não revela o site real)
+const WEBHOOK_URL = 'https://domainofscale-jet.vercel.app/api/xpag-webhook';
 
 export default async function handler(req, res) {
     // CORS

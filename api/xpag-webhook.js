@@ -16,7 +16,7 @@ const PIXEL_ID     = '2187535935146540';
 const ACCESS_TOKEN = 'EAAO4oAeNUY0BSALJmp9tgIEAXW7CrEEaOUvAXUr1DJR7gKkVmosYMgutBFZA0AyDUXYkpZA8OSlOyzInxdZCZCJIlT0JiFsGZA9UrKPa2bQNXbf7Txd8Oka7TylUxzX6RUDYUOzmZB7NZAWO3RwCDpO2YBmXkJ7jbZBEPzpmRYD5kUEEW3J2Smdrj7Bx4D5LiAZDZD';
 
 const PUSHCUT_URL  = 'https://api.pushcut.io/3X4w6yEnDKjUAX62qRmMx/notifications/op-spi-mexico-dnt-peludos';
-const SITE_URL     = 'https://donatemxn.vercel.app/donacion/';
+const SITE_URL     = 'https://www.mx-corazonespeludos.online/donacion/';
 
 export default async function handler(req, res) {
     // Responde imediatamente 200 para a XPag não retentar
