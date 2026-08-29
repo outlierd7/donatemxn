@@ -894,8 +894,123 @@ async function trackInitiateCheckoutEvent() {
 // ===== SCROLL SUAVE =====
 
 
+// ===== OXXO DINÂMICO (XPag) =====
 
+let _oxxoAmountSelected = null;
+let _oxxoRefAtual = '';
 
+function selectOxxoAmount(value, btn) {
+    _oxxoAmountSelected = parseFloat(value);
+
+    // Destaca o botão selecionado
+    document.querySelectorAll('.oxxo-amount-btn').forEach(b => {
+        b.style.background = '#fff';
+        b.style.color = '#e67e22';
+        b.style.fontWeight = '800';
+    });
+
+    if (btn) {
+        btn.style.background = '#e67e22';
+        btn.style.color = '#fff';
+        // Limpa o input customizado se clicou num botão fixo
+        const customInput = document.getElementById('oxxo-custom-amount');
+        if (customInput) customInput.value = '';
+    }
+}
+
+async function gerarOxxo() {
+    const amount = _oxxoAmountSelected;
+
+    if (!amount || isNaN(amount) || amount < 10 || amount > 10000) {
+        alert('Por favor selecciona un monto entre $10 y $10,000 MXN.');
+        return;
+    }
+
+    // Mostra loading
+    document.getElementById('oxxo-amount-selector').style.display = 'none';
+    document.getElementById('oxxo-result').style.display = 'none';
+    document.getElementById('oxxo-error').style.display = 'none';
+    document.getElementById('oxxo-loading').style.display = 'block';
+
+    try {
+        const externalId = 'OXXO_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6).toUpperCase();
+
+        const res = await fetch('/api/xpag-cashin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                method:      'OXXO',
+                amount:      amount,
+                external_id: externalId,
+            }),
+        });
+
+        const data = await res.json();
+        document.getElementById('oxxo-loading').style.display = 'none';
+
+        if (!data.ok) {
+            document.getElementById('oxxo-error-msg').textContent = data.error || 'Error al generar el voucher. Intenta de nuevo.';
+            document.getElementById('oxxo-error').style.display = 'block';
+            return;
+        }
+
+        // Preenche os dados
+        _oxxoRefAtual = data.reference || '';
+        document.getElementById('oxxo-referencia').textContent = _oxxoRefAtual;
+        document.getElementById('oxxo-monto-display').textContent = ` $${parseFloat(amount).toFixed(2)} MXN`;
+
+        // Barcode
+        const barcodeImg = document.getElementById('oxxo-barcode-img');
+        if (data.barcode_url) {
+            barcodeImg.src = data.barcode_url;
+            barcodeImg.style.display = 'block';
+            document.getElementById('oxxo-barcode-container').style.display = 'block';
+        } else {
+            document.getElementById('oxxo-barcode-container').style.display = 'none';
+        }
+
+        document.getElementById('oxxo-result').style.display = 'block';
+
+        // Dispara InitiateCheckout (intenção de pagar via OXXO)
+        if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', { value: amount, currency: 'MXN' });
+        }
+
+    } catch (err) {
+        document.getElementById('oxxo-loading').style.display = 'none';
+        document.getElementById('oxxo-error-msg').textContent = 'Error de conexión. Verifica tu internet e intenta de nuevo.';
+        document.getElementById('oxxo-error').style.display = 'block';
+        console.error('[OXXO] Error:', err);
+    }
+}
+
+function copyOxxoRef() {
+    if (!_oxxoRefAtual) return;
+    const btn = document.getElementById('btn-copy-oxxo');
+    navigator.clipboard.writeText(_oxxoRefAtual).then(() => {
+        btn.innerHTML = '<span class="copy-icon">✅</span> ¡Copiada!';
+        setTimeout(() => {
+            btn.innerHTML = '<span class="copy-icon">📋</span> COPIAR REFERENCIA';
+        }, 3000);
+    }).catch(() => {
+        prompt('Copia manualmente:', _oxxoRefAtual);
+    });
+}
+
+function resetOxxo() {
+    _oxxoAmountSelected = null;
+    _oxxoRefAtual = '';
+    document.getElementById('oxxo-result').style.display = 'none';
+    document.getElementById('oxxo-error').style.display = 'none';
+    document.getElementById('oxxo-loading').style.display = 'none';
+    document.getElementById('oxxo-amount-selector').style.display = 'block';
+    document.querySelectorAll('.oxxo-amount-btn').forEach(b => {
+        b.style.background = '#fff';
+        b.style.color = '#e67e22';
+    });
+    const customInput = document.getElementById('oxxo-custom-amount');
+    if (customInput) customInput.value = '';
+}
 
 // ===== ANIMAÇÕES E EFEITOS VISUAIS =====
 
